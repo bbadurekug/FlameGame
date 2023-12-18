@@ -1,0 +1,15 @@
+#define WINDOW_WIDTH	832
+#define WINDOW_HEIGHT	640
+
+#define FALSE	0
+#define TRUE	1
+
+#define FPS		60.0
+#define FRAME_TARGET_TIME  (1000.0 / FPS)
+
+#define STANDARD_GRAVITY	1000 //:)
+
+#define BRICK_HEIGHT	64
+#define	BRICK_WIDTH		64
+
+#define LIGHTNING_PUSH_TIME		0.06
