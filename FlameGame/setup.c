@@ -57,8 +57,6 @@ void setup() {
 
 	readLevelData(levelID);
 
-	player.position.x = 64;
-	player.position.y = 512;
 	player.width = 64;
 	player.height = 64;
 	player.flip = 0;

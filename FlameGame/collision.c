@@ -102,7 +102,7 @@ int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObje
 
 		if (entity.position.x + entity.width > ground[i].position.x &&
 			entity.position.x < ground[i].position.x + ground[i].width &&
-			entity.position.y < ground[i].position.y + ground[i].height &&
+			entity.position.y < ground[i].position.y + ground[i].height - 1.0 &&
 			entity.position.y > ground[i].position.y)
 		{
 			return i;

@@ -27,6 +27,10 @@ void readLevelData(int levelID) {
 
 	fgets(levelData, sizeof(levelData) - 1, levelFile);
 
+	sscanf_s(levelData, "%f %f", &player.position.x, &player.position.y);
+
+	fgets(levelData, sizeof(levelData) - 1, levelFile);
+
 	sscanf_s(levelData, "%f %f", &goal.position.x, &goal.position.y);
 
 	fgets(levelData, sizeof(levelData) - 1, levelFile);

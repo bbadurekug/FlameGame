@@ -69,9 +69,11 @@ void update() {
 
 		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {
 			boxes[i].position.y = platforms[array_checkCollisionGround(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
 		}
 		else if (array_checkCollisionGround(boxes[i], boxes, nBoxes) != -1) {
 			boxes[i].position.y = boxes[array_checkCollisionGround(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
 		}
 		else
 		{
@@ -87,10 +89,19 @@ void update() {
 		if(!boxes[i].grounded)
 			boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
 
-		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1 ||
-			array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
+		//printf("%f\n", boxes[i].velocity.vertical);
+
+		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{
 			boxes[i].grounded = 1;
+			if(boxes[i].velocity.vertical != 0)
+				boxes[i].position.x = (int)boxes[i].position.x - 1;
+		}
+		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
+		{
+			boxes[i].grounded = 1;
+			if (boxes[i].velocity.vertical != 0)
+				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
 		//maybe in the future make it, so player can push two boxes at once, but thats a big maybe
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
@@ -130,22 +141,21 @@ void update() {
 	if (fireball.isActive)
 		fireball.position.x += fireball.velocity.horizontal * deltaTime;
 
-	if (checkOutOfBounds(fireball) ||
-		array_checkCollisionWallLeft(fireball, platforms, nPlatforms) != -1 ||
-		array_checkCollisionWallRight(fireball, platforms, nPlatforms) != -1)
-	    fireball.isActive = 0;
-	else if (array_checkCollisionWallRight(fireball, boxes, nBoxes) != -1)
+	
+	if (array_checkCollisionWallRight(fireball, boxes, nBoxes) != -1)
 	{
 		fireball.isActive = 0;
 		boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].frame = 0;
-		fireball.position.y = -50;
+		fireball.position.y = -100;
 	}
 	else if (array_checkCollisionWallLeft(fireball, boxes, nBoxes) != -1)
 	{
 		fireball.isActive = 0;
 		boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].frame = 0;
-		fireball.position.y = -50;
+		fireball.position.y = -100;
 	}
+	else if (checkOutOfBounds(fireball))
+		fireball.isActive = 0;
 
 	if (lightningActiveTime <= 0.0) {
 		lightning.isActive = 0;
@@ -258,6 +268,7 @@ void update() {
 		player.position.x = 64;
 		player.position.y = 512;
 		levelID++;
+		freeMemory();
 		readLevelData(levelID);
 	}
 }
