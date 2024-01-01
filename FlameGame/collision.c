@@ -102,7 +102,7 @@ int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObje
 
 		if (entity.position.x + entity.width > ground[i].position.x &&
 			entity.position.x < ground[i].position.x + ground[i].width &&
-			entity.position.y < ground[i].position.y + ground[i].height - 1.0 &&
+			entity.position.y < ground[i].position.y + ground[i].height &&
 			entity.position.y > ground[i].position.y)
 		{
 			return i;
@@ -149,7 +149,6 @@ int array_checkCollisionWallRight(GameObject entity, GameObject* ground, int nOb
 
 int array_checkCollision(GameObject entity, GameObject* ground, int nObjects) {
 	if (array_checkCollisionGround(entity, ground, nObjects) != -1 ||
-		array_checkCollisionCeiling(entity, ground, nObjects) != -1 ||
 		array_checkCollisionWallLeft(entity, ground, nObjects) != -1 ||
 		array_checkCollisionWallRight(entity, ground, nObjects) != -1)
 	{

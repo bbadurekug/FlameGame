@@ -10,13 +10,13 @@ void input() {
 
 	Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	if (keystate[SDL_SCANCODE_A]) {
+	if (keystate[SDL_SCANCODE_A] && player.flip == 1) {
 		player.velocity.horizontal = -250.0;
-		player.flip = 1;
+		teleport.position.x = player.position.x;
 	}
-	if (keystate[SDL_SCANCODE_D]) {
+	if (keystate[SDL_SCANCODE_D] && player.flip == 0) {
 		player.velocity.horizontal = 250.0;
-		player.flip = 0;
+		teleport.position.x = player.position.x;
 	}
 	if (keystate[SDL_SCANCODE_I]) {
 		teleport.flip = player.flip;
@@ -43,9 +43,21 @@ void input() {
 		if (event.key.keysym.sym == SDLK_ESCAPE)
 			gameRunning = FALSE;
 
-		if (event.key.keysym.sym == SDLK_w /* && player.grounded*/) {
+		if (event.key.keysym.sym == SDLK_w && player.grounded) {
 			player.grounded = 0;
 			player.velocity.vertical = -600.0;
+		}
+
+		if (event.key.keysym.sym == SDLK_a && player.flip == 0) {
+
+			player.flip = 1;
+
+		}
+
+		if (event.key.keysym.sym == SDLK_d && player.flip == 1) {
+
+			player.flip = 0;
+
 		}
 
 		if (event.key.keysym.sym == SDLK_j && !fireball.isActive) {
@@ -63,7 +75,7 @@ void input() {
 			fireball.isActive = 1;
 		}
 
-		if (event.key.keysym.sym == SDLK_l /* && !lightning.isActive*/) {
+		if (event.key.keysym.sym == SDLK_l && !lightning.isActive) {
 			if (!player.flip)
 				lightning.position.x = player.position.x + 2.0 * player.width;
 			else

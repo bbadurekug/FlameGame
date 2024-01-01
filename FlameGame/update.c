@@ -33,7 +33,7 @@ void update() {
 	if (array_checkCollisionCeiling(player, platforms, nPlatforms) != -1)
 	{
 		player.position.y = platforms[array_checkCollisionCeiling(player, platforms, nPlatforms)].position.y + platforms[array_checkCollisionCeiling(player, platforms, nPlatforms)].height;
-		player.velocity.vertical = 0;
+		player.velocity.vertical += 10;
 	}
 
 	player.position.x += player.velocity.horizontal * deltaTime;
@@ -69,7 +69,7 @@ void update() {
 
 		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {
 			boxes[i].position.y = platforms[array_checkCollisionGround(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;
+			boxes[i].velocity.vertical = 0;		
 		}
 		else if (array_checkCollisionGround(boxes[i], boxes, nBoxes) != -1) {
 			boxes[i].position.y = boxes[array_checkCollisionGround(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
@@ -83,16 +83,13 @@ void update() {
 
 		//printf("box:%d pos:%f vel:%f \n", i, boxes[i].position.x, boxes[i].velocity.horizontal);
 
-		//boxes kinda clip through walls, it is caused by the collision detection being kinda ass
-		//can be changed by making a seperate collision detection for the player or just making a new one
-
 		if(!boxes[i].grounded)
 			boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
-		{
+		{	
 			boxes[i].grounded = 1;
 			if(boxes[i].velocity.vertical != 0)
 				boxes[i].position.x = (int)boxes[i].position.x - 1;
@@ -105,7 +102,8 @@ void update() {
 		}
 		//maybe in the future make it, so player can push two boxes at once, but thats a big maybe
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
-		{
+		{	
+			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
@@ -242,8 +240,9 @@ void update() {
 		lightningChildRight.grounded = 0;
 	}
 
-	if (array_checkCollision(teleport, platforms, nPlatforms) ||
-		array_checkCollision(teleport, boxes, nBoxes))
+	if (array_checkCollision(teleport, platforms, nPlatforms) == 1 ||
+		array_checkCollision(teleport, boxes, nBoxes) == 1 ||
+		player.grounded == 0)
 	{
 		teleport.grounded = 0;
 		teleport.frame = 1;
