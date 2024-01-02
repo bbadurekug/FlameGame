@@ -3,15 +3,23 @@
 #include"gameObjects.h"
 #include"constants.h"
 #include"collision.h"
+#include<stdio.h>
 
 int lastFrameTime = 0;
 extern int levelID;
+float deltaTime;
+
+void deltaTimeCalculation() {
+
+	//deltaTime cannot be deleted, makes game run smoothly
+	deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0;
+	lastFrameTime = SDL_GetTicks();
+
+}
 
 void update() {
 
-	//deltaTime cannot be deleted, makes game run smoothly
-	float deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0;
-	lastFrameTime = SDL_GetTicks();
+	//printf("%f %f %f %f\n", player.position.x, player.position.y, player.velocity.horizontal, player.velocity.vertical);
 
 	//printf("%d\n", array_checkCollisionGround(player, platforms, nPlatforms));
 

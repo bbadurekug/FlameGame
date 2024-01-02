@@ -4,6 +4,7 @@
 #include"render.h"
 
 extern int gameRunning;
+extern int gamePaused;
 
 int main(int argc, char* args[]) {
 
@@ -12,9 +13,17 @@ int main(int argc, char* args[]) {
 	setup();
 
 	while (gameRunning) {
-		
-		update();
-		input();
+
+		deltaTimeCalculation();
+
+		if (!gamePaused) {
+			update();
+			input();
+		}
+		else {
+			pauseInput();
+		}
+
 		render();
 
 	}

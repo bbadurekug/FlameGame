@@ -1,20 +1,25 @@
 #include"setup.h"
 #include<SDL.h>
 #include<SDL_image.h>
+#include<SDL_ttf.h>
 #include"constants.h"
 #include"gameObjects.h"
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
+TTF_Font* font = NULL;
 
 int gameRunning = FALSE;
-int levelID = 1;
+int gamePaused = FALSE;
+int levelID = 5;
 
 int initializeWindow() {
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	IMG_Init(IMG_INIT_PNG);
+
+	TTF_Init();
 
 	window = SDL_CreateWindow(
 		"FlameGame",
@@ -33,16 +38,6 @@ int initializeWindow() {
 
 }
 
-void destroyWindow() {
-
-	freeMemory();
-	IMG_Quit();
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-
-}
-
 SDL_Texture* loadTexture(const char* directory) {
 
 	SDL_Surface* surface = IMG_Load(directory);
@@ -53,8 +48,26 @@ SDL_Texture* loadTexture(const char* directory) {
 
 }
 
+SDL_Texture* createTextTexture(TTF_Font* font, const char* text, SDL_Color color) {
+
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, color);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	SDL_FreeSurface(textSurface);
+
+	return textTexture;
+
+}
+
 void setup() {
 
+	font = TTF_OpenFont("./Fonts/PressStart2P-Regular.ttf", 24);
+
+	tPaused.textTexture = createTextTexture(font, "Paused", (SDL_Color){ 255, 255, 255, 255 });
+	tPaused.width = 300;
+	tPaused.height = 100;
+	tPaused.position.x = (WINDOW_WIDTH / 2) - (tPaused.width) / 2;
+	tPaused.position.y = (WINDOW_HEIGHT / 4) - (tPaused.height) / 2;
+	
 	readLevelData(levelID);
 
 	player.width = 64;
@@ -64,6 +77,9 @@ void setup() {
 
 	platformTexture = loadTexture("./Textures/brickTest.png");
 	boxTexture = loadTexture("./Textures/boxTest.png");
+
+	//to zmenic
+	tPaused.backgroundTexture = platformTexture;
 
 	goal.width = 64;
 	goal.height = 64;
@@ -110,4 +126,25 @@ void setup() {
 	blizzard.isActive = 0;
 	blizzard.texture = loadTexture("./Textures/blizzardTest.png");
 	blizzardActiveTime = 0;
+}
+
+void destroyWindow() {
+
+	freeMemory();
+	TTF_CloseFont(font);
+	TTF_Quit();
+	SDL_DestroyTexture(player.texture);
+	SDL_DestroyTexture(platformTexture);
+	SDL_DestroyTexture(boxTexture);
+	SDL_DestroyTexture(goal.texture);
+	SDL_DestroyTexture(teleport.texture);
+	SDL_DestroyTexture(fireball.texture);
+	SDL_DestroyTexture(lightning.texture);
+	SDL_DestroyTexture(lightningChildLeft.texture);
+	SDL_DestroyTexture(blizzard.texture);
+	IMG_Quit();
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+
 }

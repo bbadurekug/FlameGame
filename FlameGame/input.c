@@ -5,6 +5,8 @@
 #include"constants.h"
 
 extern int gameRunning;
+extern int gamePaused;
+extern int levelID;
 
 void input() {
 
@@ -43,12 +45,19 @@ void input() {
 		if (event.key.keysym.sym == SDLK_ESCAPE)
 			gameRunning = FALSE;
 
+		if (event.key.keysym.sym == SDLK_p) 
+			gamePaused = TRUE;
+
+		if (event.key.keysym.sym == SDLK_r)
+			readLevelData(levelID);
+
 		if (event.key.keysym.sym == SDLK_w && player.grounded) {
 			player.grounded = 0;
 			player.velocity.vertical = -600.0;
 		}
 
 		if (event.key.keysym.sym == SDLK_a && player.flip == 0) {
+
 
 			player.flip = 1;
 
@@ -107,4 +116,28 @@ void input() {
 		}
 	}
 
+}
+
+void pauseInput() {
+
+	SDL_Event pauseEvent;
+	SDL_PollEvent(&pauseEvent);
+
+	switch (pauseEvent.type) {
+
+	case SDL_QUIT:
+		gameRunning = FALSE;
+		break;
+	case SDL_KEYDOWN:
+
+		if (pauseEvent.key.keysym.sym == SDLK_ESCAPE)
+			gameRunning = FALSE;
+
+		if (pauseEvent.key.keysym.sym == SDLK_p) {
+			player.velocity.horizontal = 0;
+			gamePaused = FALSE;
+		}
+
+		break;
+	}
 }

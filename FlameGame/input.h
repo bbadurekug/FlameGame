@@ -4,4 +4,6 @@
 
 void input();
 
+void pauseInput();
+
 #endif // !INPUT_H

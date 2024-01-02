@@ -6,6 +6,7 @@
 #include"setup.h"
 
 extern SDL_Renderer* renderer;
+extern int gamePaused;
 
 void renderObjects(SDL_Renderer* renderer, GameObject* objects, int nObjects) {
 
@@ -179,6 +180,31 @@ void render() {
 
 	if (blizzard.isActive)
 		SDL_RenderCopy(renderer, blizzard.texture, NULL, &blizzardRect);
+
+	if (gamePaused) {
+
+		SDL_Rect tPausedBoxRect = {
+
+			(int)tPaused.position.x - 10,
+			(int)tPaused.position.y - 10,
+			(int)tPaused.width + 10,
+			(int)tPaused.height + 10
+
+		};
+
+		SDL_Rect tPausedTextRect = {
+
+			(int)tPaused.position.x,
+			(int)tPaused.position.y,
+			(int)tPaused.width,
+			(int)tPaused.height
+
+		};
+
+		SDL_RenderCopy(renderer, tPaused.backgroundTexture, NULL, &tPausedBoxRect);
+		SDL_RenderCopy(renderer, tPaused.textTexture, NULL, &tPausedTextRect);
+
+	}
 
 	SDL_RenderPresent(renderer);
 }

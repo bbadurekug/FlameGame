@@ -33,6 +33,16 @@ typedef struct gameObject {
 
 } GameObject;
 
+typedef struct textBox {
+	
+	Position position;
+	float width;
+	float height;
+	SDL_Texture* textTexture;
+	SDL_Texture* backgroundTexture;
+
+} TextBox;
+
 void readLevelData(int levelID);
 
 void freeMemory();
@@ -64,5 +74,7 @@ SDL_Texture* boxTexture;
 int nBoxes;
 
 GameObject goal;
+
+TextBox tPaused;
 
 #endif 
