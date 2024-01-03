@@ -11,7 +11,7 @@ TTF_Font* font = NULL;
 
 int gameRunning = FALSE;
 int gamePaused = FALSE;
-int levelID = 5;
+int levelID = 1;
 
 int initializeWindow() {
 
@@ -67,6 +67,25 @@ void setup() {
 	tPaused.height = 100;
 	tPaused.position.x = (WINDOW_WIDTH / 2) - (tPaused.width) / 2;
 	tPaused.position.y = (WINDOW_HEIGHT / 4) - (tPaused.height) / 2;
+
+	tResume.textTexture = createTextTexture(font, "Resume", (SDL_Color) { 255, 255, 255, 255 });
+	tResume.width = 250;
+	tResume.height = 75;
+	tResume.position.x = (WINDOW_WIDTH / 2) - (tResume.width) / 2;
+	tResume.position.y = (WINDOW_HEIGHT / 2) - (tResume.height) / 2;
+	//tResume.buttonBelow = &tExit;
+
+	tExit.textTexture = createTextTexture(font, "Exit", (SDL_Color) { 255, 255, 255, 255 });
+	tExit.width = 200;
+	tExit.height = 75;
+	tExit.position.x = (WINDOW_WIDTH / 2) - (tExit.width) / 2;
+	tExit.position.y = (WINDOW_HEIGHT - (WINDOW_HEIGHT / 3)) - (tExit.height) / 2;
+	//tExit.buttonAbove = &tResume;
+
+	tSelect.position.x = tResume.position.x;
+	tSelect.position.y = tResume.position.y;
+	tSelect.width = tResume.width;
+	tSelect.height = tResume.height;
 	
 	readLevelData(levelID);
 
@@ -80,6 +99,8 @@ void setup() {
 
 	//to zmenic
 	tPaused.backgroundTexture = platformTexture;
+	tResume.backgroundTexture = platformTexture;
+	tExit.backgroundTexture = platformTexture;
 
 	goal.width = 64;
 	goal.height = 64;
@@ -99,6 +120,7 @@ void setup() {
 	fireball.height = 64;
 	fireball.isActive = 0;
 	fireball.texture = loadTexture("./Textures/fireBallTest.png");
+	fireball.frame = 0;
 
 	lightning.position.x = 0;
 	lightning.position.y = 0;

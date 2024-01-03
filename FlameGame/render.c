@@ -80,7 +80,7 @@ void render() {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	renderMultipleObjectsTexture(renderer, platforms, nPlatforms, platformTexture);
 
@@ -133,10 +133,17 @@ void render() {
 		(int)fireball.height
 	};
 
+	SDL_Rect fireballFrameRect = {
+		(fireball.width / 2.0) * fireball.frame,
+		0,
+		fireball.width / 2.0,
+		fireball.height / 2.0
+	};
+
 	if (fireball.isActive && fireball.flip)
-		SDL_RenderCopyEx(renderer, fireball.texture, NULL, &fireballRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+		SDL_RenderCopyEx(renderer, fireball.texture, &fireballFrameRect, &fireballRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
 	else if (fireball.isActive && !fireball.flip)
-		SDL_RenderCopyEx(renderer, fireball.texture, NULL, &fireballRect, 0.0, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, fireball.texture, &fireballFrameRect, &fireballRect, 0.0, NULL, SDL_FLIP_NONE);
 
 	SDL_Rect lightningRect = {
 		(int)lightning.position.x,
@@ -183,12 +190,26 @@ void render() {
 
 	if (gamePaused) {
 
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+
+		SDL_Rect tBlackScreen = {
+
+			0,
+			0,
+			WINDOW_WIDTH,
+			WINDOW_HEIGHT
+
+		};
+
+		SDL_RenderFillRect(renderer, &tBlackScreen);
+
 		SDL_Rect tPausedBoxRect = {
 
 			(int)tPaused.position.x - 10,
 			(int)tPaused.position.y - 10,
-			(int)tPaused.width + 10,
-			(int)tPaused.height + 10
+			(int)tPaused.width + 20,
+			(int)tPaused.height + 20
 
 		};
 
@@ -203,6 +224,60 @@ void render() {
 
 		SDL_RenderCopy(renderer, tPaused.backgroundTexture, NULL, &tPausedBoxRect);
 		SDL_RenderCopy(renderer, tPaused.textTexture, NULL, &tPausedTextRect);
+
+		SDL_Rect tResumeBoxRect = {
+
+			(int)tResume.position.x - 10,
+			(int)tResume.position.y - 10,
+			(int)tResume.width + 20,
+			(int)tResume.height + 20
+
+		};
+
+		SDL_Rect tResumeTextRect = {
+
+			(int)tResume.position.x,
+			(int)tResume.position.y,
+			(int)tResume.width,
+			(int)tResume.height
+
+		};
+
+		SDL_RenderCopy(renderer, tResume.backgroundTexture, NULL, &tResumeBoxRect);
+		SDL_RenderCopy(renderer, tResume.textTexture, NULL, &tResumeTextRect);
+
+		SDL_Rect tExitBoxRect = {
+
+			(int)tExit.position.x - 10,
+			(int)tExit.position.y - 10,
+			(int)tExit.width + 20,
+			(int)tExit.height + 20
+
+		};
+
+		SDL_Rect tExitTextRect = {
+
+			(int)tExit.position.x,
+			(int)tExit.position.y,
+			(int)tExit.width,
+			(int)tExit.height
+
+		};
+
+		SDL_RenderCopy(renderer, tExit.backgroundTexture, NULL, &tExitBoxRect);
+		SDL_RenderCopy(renderer, tExit.textTexture, NULL, &tExitTextRect);
+
+		SDL_Rect tSelectRect = {
+
+			(int)tSelect.position.x - 10,
+			(int)tSelect.position.y - 10,
+			(int)tSelect.width + 20,
+			(int)tSelect.height + 20
+
+		};
+
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 64);
+		SDL_RenderFillRect(renderer, &tSelectRect);
 
 	}
 

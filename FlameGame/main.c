@@ -21,6 +21,7 @@ int main(int argc, char* args[]) {
 			input();
 		}
 		else {
+			pauseUpdate();
 			pauseInput();
 		}
 

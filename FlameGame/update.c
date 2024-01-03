@@ -148,20 +148,35 @@ void update() {
 		fireball.position.x += fireball.velocity.horizontal * deltaTime;
 
 	
-	if (array_checkCollisionWallRight(fireball, boxes, nBoxes) != -1)
+	if (array_checkCollisionWallRight(fireball, boxes, nBoxes) != -1 && !fireball.grounded)
 	{
-		fireball.isActive = 0;
 		boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].frame = 0;
-		fireball.position.y = -100;
+		fireball.position.x = boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].position.x + fireball.width;
+		fireballActiveTime = FIREBALL_DECAY_TIME;
+		fireball.velocity.horizontal = 0;
+		fireball.grounded = 1;
+		fireball.frame = 1;
 	}
-	else if (array_checkCollisionWallLeft(fireball, boxes, nBoxes) != -1)
+	else if (array_checkCollisionWallLeft(fireball, boxes, nBoxes) != -1 && !fireball.grounded)
 	{
-		fireball.isActive = 0;
 		boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].frame = 0;
-		fireball.position.y = -100;
+		fireball.position.x = boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].position.x - fireball.width;
+		fireballActiveTime = FIREBALL_DECAY_TIME;
+		fireball.velocity.horizontal = 0;
+		fireball.grounded = 1;
+		fireball.frame = 1;
 	}
 	else if (checkOutOfBounds(fireball))
 		fireball.isActive = 0;
+
+	//printf("%f\n", fireballActiveTime);
+
+	if (fireballActiveTime > 0 && fireball.grounded)
+		fireballActiveTime -= deltaTime * 10;
+	else if (fireballActiveTime <= 0 && fireball.grounded){
+		fireball.isActive = 0;
+		fireball.position.y = -128;
+	}
 
 	if (lightningActiveTime <= 0.0) {
 		lightning.isActive = 0;
@@ -278,4 +293,11 @@ void update() {
 		freeMemory();
 		readLevelData(levelID);
 	}
+}
+
+void pauseUpdate() {
+
+	//add logic in future, so If pressed on a button does an action
+	//every button has an action attached to it
+
 }

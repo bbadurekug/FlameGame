@@ -42,11 +42,18 @@ void input() {
 		gameRunning = FALSE;
 		break;
 	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_ESCAPE)
+		if (event.key.keysym.sym == SDLK_p)
 			gameRunning = FALSE;
 
-		if (event.key.keysym.sym == SDLK_p) 
+		if (event.key.keysym.sym == SDLK_ESCAPE) {
+
+			tSelect.position.x = tResume.position.x;
+			tSelect.position.y = tResume.position.y;
+			tSelect.width = tResume.width;
+			tSelect.height = tResume.height;
 			gamePaused = TRUE;
+
+		}
 
 		if (event.key.keysym.sym == SDLK_r)
 			readLevelData(levelID);
@@ -70,6 +77,8 @@ void input() {
 		}
 
 		if (event.key.keysym.sym == SDLK_j && !fireball.isActive) {
+			fireball.grounded = 0;
+			fireball.frame = 0;
 			fireball.position.x = player.position.x - fireball.width;
 			fireball.position.y = player.position.y;
 			//not a big fan of nested loops, can be solved by creating a spawner object
@@ -130,12 +139,50 @@ void pauseInput() {
 		break;
 	case SDL_KEYDOWN:
 
-		if (pauseEvent.key.keysym.sym == SDLK_ESCAPE)
+		if (pauseEvent.key.keysym.sym == SDLK_p)
 			gameRunning = FALSE;
 
-		if (pauseEvent.key.keysym.sym == SDLK_p) {
+		if (pauseEvent.key.keysym.sym == SDLK_ESCAPE) {
 			player.velocity.horizontal = 0;
 			gamePaused = FALSE;
+		}
+
+		//this is a temporary solution
+		//in the future make it so all of the buttons on a screen are apart of a linked listed and tSelect can move to a buttons neightbours
+		//every button should also have an action attached to it "exit" "resume" "lower volume" and so on
+
+		if (pauseEvent.key.keysym.sym == SDLK_s || pauseEvent.key.keysym.sym == SDLK_DOWN && tSelect.position.y == tResume.position.y) {
+
+			tSelect.position.x = tExit.position.x;
+			tSelect.position.y = tExit.position.y;
+			tSelect.width = tExit.width;
+			tSelect.height = tExit.height;
+
+		}
+
+		if (pauseEvent.key.keysym.sym == SDLK_w || pauseEvent.key.keysym.sym == SDLK_UP && tSelect.position.y == tExit.position.y) {
+
+			tSelect.position.x = tResume.position.x;
+			tSelect.position.y = tResume.position.y;
+			tSelect.width = tResume.width;
+			tSelect.height = tResume.height;
+
+		}
+
+		if (pauseEvent.key.keysym.sym == SDLK_RETURN) {
+
+			if (tSelect.position.y == tResume.position.y) {
+
+				player.velocity.horizontal = 0;
+				gamePaused = FALSE;
+
+			}
+			else if (tSelect.position.y == tExit.position.y) {
+
+				gameRunning = FALSE;
+
+			}
+
 		}
 
 		break;

@@ -52,6 +52,7 @@ GameObject player;
 GameObject teleport;
 
 GameObject fireball;
+float fireballActiveTime;
 
 GameObject lightning;
 float lightningActiveTime;
@@ -76,5 +77,8 @@ int nBoxes;
 GameObject goal;
 
 TextBox tPaused;
+TextBox tResume;
+TextBox tExit;
+TextBox tSelect;
 
 #endif 
