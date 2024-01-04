@@ -48,6 +48,7 @@ void readLevelData(int levelID);
 void freeMemory();
 
 GameObject player;
+float playerAnimationTime;
 
 GameObject teleport;
 

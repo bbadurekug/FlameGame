@@ -102,10 +102,17 @@ void render() {
 		(int)player.height
 	};
 
+	SDL_Rect playerFrameRect = {
+		(player.width / 2.0)* player.frame,
+		0,
+		player.width / 2.0,
+		player.height / 2.0
+	};
+
 	if (!player.flip)
-		SDL_RenderCopyEx(renderer, player.texture, NULL, &playerRect, 0.0, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, player.texture, &playerFrameRect, &playerRect, 0.0, NULL, SDL_FLIP_NONE);
 	else
-		SDL_RenderCopyEx(renderer, player.texture, NULL, &playerRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+		SDL_RenderCopyEx(renderer, player.texture, &playerFrameRect, &playerRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
 
 	SDL_Rect teleportRect = {
 		(int)teleport.position.x,

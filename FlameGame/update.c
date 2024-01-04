@@ -73,6 +73,18 @@ void update() {
 		player.velocity.vertical += (STANDARD_GRAVITY * 2) * deltaTime;
 	}
 
+	if (player.velocity.horizontal != 0 && player.grounded && playerAnimationTime > 0) {
+
+		playerAnimationTime -= deltaTime;
+
+	}
+	else if (player.velocity.horizontal != 0 && player.grounded && playerAnimationTime <= 0) {
+
+		player.frame = ++player.frame % 2;
+		playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
+
+	}
+
 	for (int i = 0; i < nBoxes; i++) {
 
 		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {

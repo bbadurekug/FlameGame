@@ -93,6 +93,7 @@ void setup() {
 	player.height = 64;
 	player.flip = 0;
 	player.texture = loadTexture("./Textures/mageTest.png");
+	player.frame = 0;
 
 	platformTexture = loadTexture("./Textures/brickTest.png");
 	boxTexture = loadTexture("./Textures/boxTest.png");

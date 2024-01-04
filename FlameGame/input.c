@@ -65,25 +65,28 @@ void input() {
 
 		if (event.key.keysym.sym == SDLK_a && player.flip == 0) {
 
-
 			player.flip = 1;
+			player.frame = 0;
+			playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
 
 		}
 
 		if (event.key.keysym.sym == SDLK_d && player.flip == 1) {
 
 			player.flip = 0;
+			player.frame = 0;
+			playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
 
 		}
 
 		if (event.key.keysym.sym == SDLK_j && !fireball.isActive) {
 			fireball.grounded = 0;
 			fireball.frame = 0;
-			fireball.position.x = player.position.x - fireball.width;
+			fireball.position.x = player.position.x - fireball.width + 1;
 			fireball.position.y = player.position.y;
 			//not a big fan of nested loops, can be solved by creating a spawner object
 			if (!player.flip) {
-				fireball.position.x += fireball.width + player.width;
+				fireball.position.x += fireball.width + player.width - 2;
 				fireball.velocity.horizontal = 500;
 			}
 			else {
