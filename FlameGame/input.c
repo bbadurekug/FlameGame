@@ -82,11 +82,11 @@ void input() {
 		if (event.key.keysym.sym == SDLK_j && !fireball.isActive) {
 			fireball.grounded = 0;
 			fireball.frame = 0;
-			fireball.position.x = player.position.x - fireball.width + 1;
+			fireball.position.x = player.position.x - fireball.width - 2;
 			fireball.position.y = player.position.y;
 			//not a big fan of nested loops, can be solved by creating a spawner object
 			if (!player.flip) {
-				fireball.position.x += fireball.width + player.width - 2;
+				fireball.position.x += fireball.width + player.width + 4;
 				fireball.velocity.horizontal = 500;
 			}
 			else {

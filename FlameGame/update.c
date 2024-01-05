@@ -8,6 +8,7 @@
 int lastFrameTime = 0;
 extern int levelID;
 float deltaTime;
+char fireballCollisionIndex = 0;
 
 void deltaTimeCalculation() {
 
@@ -73,6 +74,7 @@ void update() {
 		player.velocity.vertical += (STANDARD_GRAVITY * 2) * deltaTime;
 	}
 
+	
 	if (player.velocity.horizontal != 0 && player.grounded && playerAnimationTime > 0) {
 
 		playerAnimationTime -= deltaTime;
@@ -84,6 +86,27 @@ void update() {
 		playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
 
 	}
+	else {
+
+		player.frame = 0;
+
+	}
+
+	//this code is for the jumping animation
+	//Im not yet fully satisfied with how it looks, so I will leave it for later, when I feel like drawing
+
+	/*if (!player.grounded) {
+
+		if (player.velocity.vertical > 0) {
+
+			player.frame = 3;
+
+		}
+		else if (player.velocity.vertical < 0) {
+
+			player.frame = 2;
+		}
+	}*/
 
 	for (int i = 0; i < nBoxes; i++) {
 
@@ -163,6 +186,7 @@ void update() {
 	if (array_checkCollisionWallRight(fireball, boxes, nBoxes) != -1 && !fireball.grounded)
 	{
 		boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].frame = 0;
+		fireballCollisionIndex = array_checkCollisionWallRight(fireball, boxes, nBoxes);
 		fireball.position.x = boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].position.x + fireball.width;
 		fireballActiveTime = FIREBALL_DECAY_TIME;
 		fireball.velocity.horizontal = 0;
@@ -172,6 +196,7 @@ void update() {
 	else if (array_checkCollisionWallLeft(fireball, boxes, nBoxes) != -1 && !fireball.grounded)
 	{
 		boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].frame = 0;
+		fireballCollisionIndex = array_checkCollisionWallLeft(fireball, boxes, nBoxes);
 		fireball.position.x = boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].position.x - fireball.width;
 		fireballActiveTime = FIREBALL_DECAY_TIME;
 		fireball.velocity.horizontal = 0;
@@ -183,8 +208,10 @@ void update() {
 
 	//printf("%f\n", fireballActiveTime);
 
-	if (fireballActiveTime > 0 && fireball.grounded)
+	if (fireballActiveTime > 0 && fireball.grounded) {
 		fireballActiveTime -= deltaTime * 10;
+		fireball.position.x = (fireball.flip)? boxes[fireballCollisionIndex].position.x + fireball.width: boxes[fireballCollisionIndex].position.x - fireball.width;
+	}
 	else if (fireballActiveTime <= 0 && fireball.grounded){
 		fireball.isActive = 0;
 		fireball.position.y = -128;
