@@ -1,5 +1,5 @@
-#define WINDOW_WIDTH	832
-#define WINDOW_HEIGHT	640
+#define WINDOW_WIDTH	1024
+#define WINDOW_HEIGHT	768
 
 #define FALSE	0
 #define TRUE	1
