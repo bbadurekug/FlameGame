@@ -11,7 +11,7 @@ TTF_Font* font = NULL;
 
 int gameRunning = FALSE;
 int gamePaused = FALSE;
-int levelID = 2;
+int levelID = 1;
 
 int initializeWindow() {
 
@@ -23,11 +23,11 @@ int initializeWindow() {
 
 	window = SDL_CreateWindow(
 		"FlameGame",
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
-		SDL_WINDOW_FULLSCREEN
+		SDL_WINDOW_BORDERLESS
 	);
 
 	renderer = SDL_CreateRenderer(
