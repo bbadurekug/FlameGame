@@ -26,7 +26,7 @@ void input() {
 			teleport.position.x = player.position.x + 2.0 * player.width;
 		else
 			teleport.position.x = player.position.x - 2.0 * player.width;
-		teleport.position.y = player.position.y - 0.1;
+		teleport.position.y = player.position.y;
 		teleport.isActive = 1;
 	}
 	else {

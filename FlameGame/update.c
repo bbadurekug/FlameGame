@@ -302,8 +302,10 @@ void update() {
 		lightningChildRight.grounded = 0;
 	}
 
-	if (array_checkCollision(teleport, platforms, nPlatforms) == 1 ||
-		array_checkCollision(teleport, boxes, nBoxes) == 1 ||
+	if (array_checkCollisionTeleport(teleport, platforms, nPlatforms) == 1 ||
+		array_checkCollisionTeleport(teleport, boxes, nBoxes) == 1 ||
+		checkIsInsideObject(teleport, platforms, nPlatforms) == 1 ||
+		checkIsInsideObject(teleport, boxes, nBoxes) == 1 ||
 		player.grounded == 0)
 	{
 		teleport.grounded = 0;
@@ -326,8 +328,6 @@ void update() {
 		blizzard.isActive = 0;
 
 	if (checkCollision(player, goal)) {
-		player.position.x = 64;
-		player.position.y = 512;
 		levelID++;
 		freeMemory();
 		readLevelData(levelID);

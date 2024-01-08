@@ -96,6 +96,23 @@ int array_checkCollisionGround(GameObject entity, GameObject* ground, int nObjec
 	return -1;
 }
 
+int array_checkCollisionGroundTeleport(GameObject entity, GameObject* ground, int nObjects) {
+
+	for (int i = 0; i < nObjects; i++) {
+
+		if (entity.position.x + entity.width > ground[i].position.x &&
+			entity.position.x < ground[i].position.x + ground[i].width &&
+			entity.position.y + entity.height > ground[i].position.y &&
+			entity.position.y + entity.height < ground[i].position.y + ground[i].height)
+		{
+			return i;
+		}
+
+	}
+
+	return -1;
+}
+
 int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObjects) {
 
 	for (int i = 0; i < nObjects; i++) {
@@ -156,4 +173,32 @@ int array_checkCollision(GameObject entity, GameObject* ground, int nObjects) {
 	}
 
 	return 0;
+}
+
+int array_checkCollisionTeleport(GameObject entity, GameObject* ground, int nObjects) {
+	if (array_checkCollisionGroundTeleport(entity, ground, nObjects) != -1 ||
+		array_checkCollisionWallLeft(entity, ground, nObjects) != -1 ||
+		array_checkCollisionWallRight(entity, ground, nObjects) != -1)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+int checkIsInsideObject(GameObject entity, GameObject* ground, int nObjects) {
+
+	for (int i = 0; i < nObjects; i++) {
+		if (entity.position.y >= ground[i].position.y &&
+			entity.position.y + entity.height <= ground[i].position.y + ground[i].height &&
+			entity.position.x >= ground[i].position.x &&
+			entity.position.x + entity.width <= ground[i].position.x + ground[i].width)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+
+
 }

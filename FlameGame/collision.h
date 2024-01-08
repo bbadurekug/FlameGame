@@ -26,4 +26,8 @@ int array_checkCollisionWallRight(GameObject entity, GameObject* ground, int nOb
 
 int array_checkCollision(GameObject entity, GameObject* ground, int nObjects);
 
+int array_checkCollisionTeleport(GameObject entity, GameObject* ground, int nObjects);
+
+int checkIsInsideObject(GameObject entity, GameObject* ground, int nObjects);
+
 #endif 

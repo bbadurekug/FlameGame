@@ -95,6 +95,25 @@ void render() {
 
 	SDL_RenderCopy(renderer, goal.texture, NULL, &goalRect);
 
+	SDL_Rect fireballRect = {
+		(int)fireball.position.x,
+		(int)fireball.position.y,
+		(int)fireball.width,
+		(int)fireball.height
+	};
+
+	SDL_Rect fireballFrameRect = {
+		(fireball.width / 2.0) * fireball.frame,
+		0,
+		fireball.width / 2.0,
+		fireball.height / 2.0
+	};
+
+	if (fireball.isActive && fireball.flip)
+		SDL_RenderCopyEx(renderer, fireball.texture, &fireballFrameRect, &fireballRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+	else if (fireball.isActive && !fireball.flip)
+		SDL_RenderCopyEx(renderer, fireball.texture, &fireballFrameRect, &fireballRect, 0.0, NULL, SDL_FLIP_NONE);
+
 	SDL_Rect playerRect = {
 		(int)player.position.x,
 		(int)player.position.y,
@@ -132,25 +151,6 @@ void render() {
 		SDL_RenderCopyEx(renderer, teleport.texture, &teleportFrameRect, &teleportRect, 0.0, NULL, SDL_FLIP_NONE);
 	else if (teleport.isActive && teleport.flip)
 		SDL_RenderCopyEx(renderer, teleport.texture, &teleportFrameRect, &teleportRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
-
-	SDL_Rect fireballRect = {
-		(int)fireball.position.x,
-		(int)fireball.position.y,
-		(int)fireball.width,
-		(int)fireball.height
-	};
-
-	SDL_Rect fireballFrameRect = {
-		(fireball.width / 2.0) * fireball.frame,
-		0,
-		fireball.width / 2.0,
-		fireball.height / 2.0
-	};
-
-	if (fireball.isActive && fireball.flip)
-		SDL_RenderCopyEx(renderer, fireball.texture, &fireballFrameRect, &fireballRect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
-	else if (fireball.isActive && !fireball.flip)
-		SDL_RenderCopyEx(renderer, fireball.texture, &fireballFrameRect, &fireballRect, 0.0, NULL, SDL_FLIP_NONE);
 
 	SDL_Rect lightningRect = {
 		(int)lightning.position.x,
