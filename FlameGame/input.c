@@ -97,6 +97,7 @@ void input() {
 		}
 
 		if (event.key.keysym.sym == SDLK_l && !lightning.isActive) {
+			lightning.frame = 0;
 			if (!player.flip)
 				lightning.position.x = player.position.x + 2.0 * player.width;
 			else

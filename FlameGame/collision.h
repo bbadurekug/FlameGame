@@ -30,4 +30,6 @@ int array_checkCollisionTeleport(GameObject entity, GameObject* ground, int nObj
 
 int checkIsInsideObject(GameObject entity, GameObject* ground, int nObjects);
 
+int checkIsInsideObjectSingular(GameObject entity, GameObject ground);
+
 #endif 

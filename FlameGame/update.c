@@ -28,11 +28,13 @@ void update() {
 
 		player.grounded = 1;
 		player.position.y = platforms[array_checkCollisionGround(player, platforms, nPlatforms)].position.y - player.height;
+		player.frame = 0;
 	}
 	else if (array_checkCollisionGround(player, boxes, nBoxes) != -1 && player.velocity.vertical > 0) {
 
 		player.grounded = 1;
 		player.position.y = boxes[array_checkCollisionGround(player, boxes, nBoxes)].position.y - player.height;
+		player.frame = 0;
 	}
 	else
 	{
@@ -67,35 +69,31 @@ void update() {
 		player.position.x = boxes[array_checkCollisionWallRight(player, boxes, nBoxes)].position.x + boxes[array_checkCollisionWallRight(player, boxes, nBoxes)].width;
 	}
 
-	//printf("%f %f\n", player.position.x, player.velocity.horizontal);
-
 	if (player.grounded == 0) {
 		player.position.y += player.velocity.vertical * deltaTime;
 		player.velocity.vertical += (STANDARD_GRAVITY * 2) * deltaTime;
 	}
 
-	
-	if (player.velocity.horizontal != 0 && player.grounded && playerAnimationTime > 0) {
+	if (player.grounded) {
 
-		playerAnimationTime -= deltaTime;
+		if (playerAnimationTime > 0) {
 
-	}
-	else if (player.velocity.horizontal != 0 && player.grounded && playerAnimationTime <= 0) {
+			playerAnimationTime -= deltaTime;
 
-		player.frame = ++player.frame % 2;
-		playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
+		}
+		else if (playerAnimationTime <= 0) {
 
+			player.frame = ++player.frame % 2;
+			playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
+
+		}
+		else {
+
+			player.frame = 0;
+
+		}
 	}
 	else {
-
-		player.frame = 0;
-
-	}
-
-	//this code is for the jumping animation
-	//Im not yet fully satisfied with how it looks, so I will leave it for later, when I feel like drawing
-
-	/*if (!player.grounded) {
 
 		if (player.velocity.vertical > 0) {
 
@@ -106,7 +104,7 @@ void update() {
 
 			player.frame = 2;
 		}
-	}*/
+	}
 
 	for (int i = 0; i < nBoxes; i++) {
 
@@ -226,7 +224,8 @@ void update() {
 		lightning.position.y += lightning.velocity.vertical * deltaTime;
 
 		if (array_checkCollisionGround(lightning, platforms, nPlatforms) != -1) {
-
+			
+			lightning.frame = 1;
 			lightning.velocity.vertical = 0;
 			lightning.position.y = platforms[array_checkCollisionGround(lightning, platforms, nPlatforms)].position.y - lightning.height - 0.001;
 
@@ -240,7 +239,8 @@ void update() {
 
 		}
 		else if (array_checkCollisionGround(lightning, boxes, nBoxes) != -1) {
-
+			
+			lightning.frame = 1;
 			lightning.velocity.vertical = 0;
 			lightning.position.y = boxes[array_checkCollisionGround(lightning, boxes, nBoxes)].position.y - lightning.height - 0.001;
 
@@ -327,7 +327,9 @@ void update() {
 	else
 		blizzard.isActive = 0;
 
-	if (checkCollision(player, goal)) {
+	if (checkCollision(player, goal) ||
+		checkIsInsideObjectSingular(player, goal)) 
+	{
 		levelID++;
 		freeMemory();
 		readLevelData(levelID);

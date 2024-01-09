@@ -27,7 +27,7 @@ int initializeWindow() {
 		SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
-		SDL_WINDOW_FULLSCREEN
+		SDL_WINDOW_BORDERLESS
 	);
 
 	renderer = SDL_CreateRenderer(

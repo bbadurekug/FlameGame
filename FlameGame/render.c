@@ -159,8 +159,15 @@ void render() {
 		(int)lightning.height
 	};
 
+	SDL_Rect lightningFrameRect = {
+		(lightning.width / 2.0) * lightning.frame,
+		0,
+		lightning.width / 2.0,
+		lightning.height / 2.0
+	};
+
 	if (lightning.isActive)
-		SDL_RenderCopy(renderer, lightning.texture, NULL, &lightningRect);
+		SDL_RenderCopy(renderer, lightning.texture, &lightningFrameRect, &lightningRect);
 
 	SDL_Rect lightningChildLeftRect = {
 

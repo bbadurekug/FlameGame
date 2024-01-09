@@ -200,5 +200,18 @@ int checkIsInsideObject(GameObject entity, GameObject* ground, int nObjects) {
 
 	return 0;
 
+}
+
+int checkIsInsideObjectSingular(GameObject entity, GameObject ground) {
+
+	if (entity.position.y >= ground.position.y &&
+		entity.position.y + entity.height <= ground.position.y + ground.height &&
+		entity.position.x >= ground.position.x &&
+		entity.position.x + entity.width <= ground.position.x + ground.width)
+	{
+		return 1;
+	}
+
+	return 0;
 
 }
