@@ -1,4 +1,7 @@
 #include"gameObjects.h"
+#include"constants.h"
+#include"setup.h"
+#include"manager.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -79,4 +82,19 @@ void freeMemory() {
 
 	free(platforms);
 	free(boxes);
+}
+
+extern int gameRunning;
+
+void tExitLogic() {
+
+	gameRunning = FALSE;
+
+}
+
+void tResumeLogic() {
+
+	player.velocity.horizontal = 0;
+	gameState = GAMEPLAY;
+
 }

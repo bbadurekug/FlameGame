@@ -3,6 +3,7 @@
 #include"gameObjects.h"
 #include"constants.h"
 #include"collision.h"
+#include"manager.h"
 #include<stdio.h>
 
 int lastFrameTime = 0;
@@ -45,6 +46,12 @@ void update() {
 	{
 		player.position.y = platforms[array_checkCollisionCeiling(player, platforms, nPlatforms)].position.y + platforms[array_checkCollisionCeiling(player, platforms, nPlatforms)].height;
 		player.velocity.vertical += 10;
+	}
+
+	if (array_checkCollisionCeiling(player, boxes, nBoxes) != -1)
+	{
+		//this means that the player has died
+		readLevelData(levelID);
 	}
 
 	player.position.x += player.velocity.horizontal * deltaTime;
@@ -340,5 +347,17 @@ void pauseUpdate() {
 
 	//add logic in future, so If pressed on a button does an action
 	//every button has an action attached to it
+
+	tSelect.position.x = tCurrentSelect->position.x;
+	tSelect.position.y = tCurrentSelect->position.y;
+	tSelect.width = tCurrentSelect->width;
+	tSelect.height = tCurrentSelect->height;
+
+}
+
+void loadScreenUpdate() {
+
+	//Im not actually sure if there will be a load screen at all 
+	//The levels load pretty fast and I dont think it would look good
 
 }

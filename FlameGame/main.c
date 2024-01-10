@@ -2,9 +2,11 @@
 #include"update.h"
 #include"input.h"
 #include"render.h"
+#include"manager.h"
 
 extern int gameRunning;
 extern int gamePaused;
+extern enum GameState gameState;
 
 int main(int argc, char* args[]) {
 
@@ -15,17 +17,35 @@ int main(int argc, char* args[]) {
 	while (gameRunning) {
 
 		deltaTimeCalculation();
+	
+		switch (gameState) {
 
-		if (!gamePaused) {
+		case TITLESCREEN:
+
+			break;
+
+		case GAMEPLAY:
 			update();
 			input();
-		}
-		else {
+			render();
+			break;
+
+		case PAUSESCREEN:
 			pauseUpdate();
 			pauseInput();
+			render();
+			break;
+
+		case LOADSCREEN:
+
+			break;
+
+		case DEATHSTATE:
+
+			break;
 		}
 
-		render();
+		
 
 	}
 

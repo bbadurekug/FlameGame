@@ -4,9 +4,10 @@
 #include"constants.h"
 #include"gameObjects.h"
 #include"setup.h"
+#include"manager.h"
 
 extern SDL_Renderer* renderer;
-extern int gamePaused;
+extern enum GameState gameState;
 
 void renderObjects(SDL_Renderer* renderer, GameObject* objects, int nObjects) {
 
@@ -202,7 +203,7 @@ void render() {
 	if (blizzard.isActive)
 		SDL_RenderCopy(renderer, blizzard.texture, NULL, &blizzardRect);
 
-	if (gamePaused) {
+	if (gameState == PAUSESCREEN) {
 
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);

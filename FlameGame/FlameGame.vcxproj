@@ -141,6 +141,7 @@
     <ClCompile Include="gameObjects.c" />
     <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="manager.c" />
     <ClCompile Include="render.c" />
     <ClCompile Include="setup.c" />
     <ClCompile Include="update.c" />
@@ -150,6 +151,7 @@
     <ClInclude Include="constants.h" />
     <ClInclude Include="gameObjects.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="manager.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="setup.h" />
     <ClInclude Include="update.h" />

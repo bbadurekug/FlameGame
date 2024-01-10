@@ -4,14 +4,15 @@
 #include<SDL_ttf.h>
 #include"constants.h"
 #include"gameObjects.h"
+#include"manager.h"
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
 
 int gameRunning = FALSE;
-int gamePaused = FALSE;
 int levelID = 1;
+extern enum GameState gameState;
 
 int initializeWindow() {
 
@@ -60,6 +61,8 @@ SDL_Texture* createTextTexture(TTF_Font* font, const char* text, SDL_Color color
 
 void setup() {
 
+	gameState = 1;
+		
 	font = TTF_OpenFont("./Fonts/PressStart2P-Regular.ttf", 24);
 
 	tPaused.textTexture = createTextTexture(font, "Paused", (SDL_Color){ 255, 255, 255, 255 });
@@ -73,14 +76,18 @@ void setup() {
 	tResume.height = 75;
 	tResume.position.x = (WINDOW_WIDTH / 2) - (tResume.width) / 2;
 	tResume.position.y = (WINDOW_HEIGHT / 2) - (tResume.height) / 2;
-	//tResume.buttonBelow = &tExit;
+	tResume.below = &tExit;
+	tResume.above = NULL;
+	tResume.logic = tResumeLogic;
 
 	tExit.textTexture = createTextTexture(font, "Exit", (SDL_Color) { 255, 255, 255, 255 });
 	tExit.width = 200;
 	tExit.height = 75;
 	tExit.position.x = (WINDOW_WIDTH / 2) - (tExit.width) / 2;
 	tExit.position.y = (WINDOW_HEIGHT - (WINDOW_HEIGHT / 3)) - (tExit.height) / 2;
-	//tExit.buttonAbove = &tResume;
+	tExit.above = &tResume;
+	tExit.below = NULL;
+	tExit.logic = tExitLogic;
 
 	tSelect.position.x = tResume.position.x;
 	tSelect.position.y = tResume.position.y;

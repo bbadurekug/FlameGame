@@ -40,12 +40,19 @@ typedef struct textBox {
 	float height;
 	SDL_Texture* textTexture;
 	SDL_Texture* backgroundTexture;
+	struct TextBox* above;
+	struct TexTBox* below;
+	void (*logic) ();
 
 } TextBox;
 
 void readLevelData(int levelID);
 
 void freeMemory();
+
+void tExitLogic();
+
+void tResumeLogic();
 
 GameObject player;
 float playerAnimationTime;
@@ -81,5 +88,6 @@ TextBox tPaused;
 TextBox tResume;
 TextBox tExit;
 TextBox tSelect;
+TextBox *tCurrentSelect;
 
 #endif 

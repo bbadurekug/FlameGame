@@ -3,10 +3,12 @@
 #include"gameObjects.h"
 #include"setup.h"
 #include"constants.h"
+#include"manager.h"
 
 extern int gameRunning;
 extern int gamePaused;
 extern int levelID;
+extern enum GameState gameState;
 
 void input() {
 
@@ -46,12 +48,9 @@ void input() {
 			gameRunning = FALSE;
 
 		if (event.key.keysym.sym == SDLK_ESCAPE) {
-
-			tSelect.position.x = tResume.position.x;
-			tSelect.position.y = tResume.position.y;
-			tSelect.width = tResume.width;
-			tSelect.height = tResume.height;
-			gamePaused = TRUE;
+			
+			tCurrentSelect = &tResume;
+			gameState = PAUSESCREEN;
 
 		}
 
@@ -148,7 +147,7 @@ void pauseInput() {
 
 		if (pauseEvent.key.keysym.sym == SDLK_ESCAPE) {
 			player.velocity.horizontal = 0;
-			gamePaused = FALSE;
+			gameState = GAMEPLAY;
 		}
 
 		//this is a temporary solution
@@ -157,35 +156,21 @@ void pauseInput() {
 
 		if (pauseEvent.key.keysym.sym == SDLK_s || pauseEvent.key.keysym.sym == SDLK_DOWN && tSelect.position.y == tResume.position.y) {
 
-			tSelect.position.x = tExit.position.x;
-			tSelect.position.y = tExit.position.y;
-			tSelect.width = tExit.width;
-			tSelect.height = tExit.height;
+			if(tCurrentSelect->below != NULL)
+				tCurrentSelect = tCurrentSelect->below;
 
 		}
 
 		if (pauseEvent.key.keysym.sym == SDLK_w || pauseEvent.key.keysym.sym == SDLK_UP && tSelect.position.y == tExit.position.y) {
 
-			tSelect.position.x = tResume.position.x;
-			tSelect.position.y = tResume.position.y;
-			tSelect.width = tResume.width;
-			tSelect.height = tResume.height;
+			if (tCurrentSelect->above != NULL)
+				tCurrentSelect = tCurrentSelect->above;
 
 		}
 
 		if (pauseEvent.key.keysym.sym == SDLK_RETURN) {
 
-			if (tSelect.position.y == tResume.position.y) {
-
-				player.velocity.horizontal = 0;
-				gamePaused = FALSE;
-
-			}
-			else if (tSelect.position.y == tExit.position.y) {
-
-				gameRunning = FALSE;
-
-			}
+			tCurrentSelect->logic();
 
 		}
 
