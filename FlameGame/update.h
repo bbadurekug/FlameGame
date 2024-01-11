@@ -8,4 +8,6 @@ void update();
 
 void pauseUpdate();
 
+void deathUpdate();
+
 #endif // !UPDATE_H

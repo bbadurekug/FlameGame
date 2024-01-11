@@ -6,4 +6,6 @@ void input();
 
 void pauseInput();
 
+void deathInput();
+
 #endif // !INPUT_H

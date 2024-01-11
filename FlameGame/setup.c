@@ -61,19 +61,19 @@ SDL_Texture* createTextTexture(TTF_Font* font, const char* text, SDL_Color color
 
 void setup() {
 
-	gameState = 1;
+	gameState = GAMEPLAY;
 		
 	font = TTF_OpenFont("./Fonts/PressStart2P-Regular.ttf", 24);
 
 	tPaused.textTexture = createTextTexture(font, "Paused", (SDL_Color){ 255, 255, 255, 255 });
 	tPaused.width = 300;
-	tPaused.height = 100;
+	tPaused.height = 96;
 	tPaused.position.x = (WINDOW_WIDTH / 2) - (tPaused.width) / 2;
 	tPaused.position.y = (WINDOW_HEIGHT / 4) - (tPaused.height) / 2;
 
 	tResume.textTexture = createTextTexture(font, "Resume", (SDL_Color) { 255, 255, 255, 255 });
 	tResume.width = 250;
-	tResume.height = 75;
+	tResume.height = 64;
 	tResume.position.x = (WINDOW_WIDTH / 2) - (tResume.width) / 2;
 	tResume.position.y = (WINDOW_HEIGHT / 2) - (tResume.height) / 2;
 	tResume.below = &tExit;
@@ -82,17 +82,33 @@ void setup() {
 
 	tExit.textTexture = createTextTexture(font, "Exit", (SDL_Color) { 255, 255, 255, 255 });
 	tExit.width = 200;
-	tExit.height = 75;
+	tExit.height = 64;
 	tExit.position.x = (WINDOW_WIDTH / 2) - (tExit.width) / 2;
 	tExit.position.y = (WINDOW_HEIGHT - (WINDOW_HEIGHT / 3)) - (tExit.height) / 2;
 	tExit.above = &tResume;
 	tExit.below = NULL;
 	tExit.logic = tExitLogic;
 
-	tSelect.position.x = tResume.position.x;
-	tSelect.position.y = tResume.position.y;
-	tSelect.width = tResume.width;
-	tSelect.height = tResume.height;
+	tSelect.position.x = 0;
+	tSelect.position.y = 0;
+	tSelect.width = 64;
+	tSelect.height = 64;
+	tSelect.texture = loadTexture("./Textures/arrow.png");
+
+	tDead.textTexture = createTextTexture(font, "You Died :(", (SDL_Color) { 255, 255, 255, 255 });
+	tDead.width = 550;
+	tDead.height = 96;
+	tDead.position.x = (WINDOW_WIDTH / 2) - (tDead.width) / 2;
+	tDead.position.y = (WINDOW_HEIGHT / 4) - (tDead.height) / 2;
+
+	tTryAgain.textTexture = createTextTexture(font, "Try Again", (SDL_Color) { 255, 255, 255, 255 });
+	tTryAgain.width = 350;
+	tTryAgain.height = 64;
+	tTryAgain.position.x = (WINDOW_WIDTH / 2) - (tTryAgain.width) / 2;
+	tTryAgain.position.y = (WINDOW_HEIGHT - (WINDOW_HEIGHT / 3)) - (tTryAgain.height) / 2;
+	tTryAgain.above = NULL;
+	tTryAgain.below = NULL;
+	tTryAgain.logic = tTryAgainLogic;
 	
 	readLevelData(levelID);
 
@@ -109,10 +125,15 @@ void setup() {
 	tPaused.backgroundTexture = platformTexture;
 	tResume.backgroundTexture = platformTexture;
 	tExit.backgroundTexture = platformTexture;
+	tDead.backgroundTexture = platformTexture;
+	tTryAgain.backgroundTexture = platformTexture;
 
 	goal.width = 64;
 	goal.height = 64;
 	goal.texture = loadTexture("./Textures/goalTest.png");
+	goal.frame = 1;
+	//this is the opened door frame, possible key idea to open doors
+	//key could behave like a box, could make some interesting puzzles
 
 	teleport.position.x = 0;
 	teleport.position.y = 0;

@@ -54,6 +54,8 @@ void tExitLogic();
 
 void tResumeLogic();
 
+void tTryAgainLogic();
+
 GameObject player;
 float playerAnimationTime;
 
@@ -87,7 +89,9 @@ GameObject goal;
 TextBox tPaused;
 TextBox tResume;
 TextBox tExit;
-TextBox tSelect;
+TextBox tDead;
+TextBox tTryAgain;
+GameObject tSelect;
 TextBox *tCurrentSelect;
 
 #endif 

@@ -29,13 +29,13 @@ void update() {
 
 		player.grounded = 1;
 		player.position.y = platforms[array_checkCollisionGround(player, platforms, nPlatforms)].position.y - player.height;
-		player.frame = 0;
+		if(player.frame > 1) player.frame = 0;
 	}
 	else if (array_checkCollisionGround(player, boxes, nBoxes) != -1 && player.velocity.vertical > 0) {
 
 		player.grounded = 1;
 		player.position.y = boxes[array_checkCollisionGround(player, boxes, nBoxes)].position.y - player.height;
-		player.frame = 0;
+		if (player.frame > 1)  player.frame = 0;
 	}
 	else
 	{
@@ -51,7 +51,8 @@ void update() {
 	if (array_checkCollisionCeiling(player, boxes, nBoxes) != -1)
 	{
 		//this means that the player has died
-		readLevelData(levelID);
+		tCurrentSelect = &tTryAgain;
+		gameState = DEATHSTATE;
 	}
 
 	player.position.x += player.velocity.horizontal * deltaTime;
@@ -81,7 +82,9 @@ void update() {
 		player.velocity.vertical += (STANDARD_GRAVITY * 2) * deltaTime;
 	}
 
-	if (player.grounded) {
+	//printf("time: %f\n", playerAnimationTime);
+
+	if (player.grounded && player.velocity.horizontal != 0) {
 
 		if (playerAnimationTime > 0) {
 
@@ -94,13 +97,9 @@ void update() {
 			playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
 
 		}
-		else {
 
-			player.frame = 0;
-
-		}
 	}
-	else {
+	else if(!player.grounded) {
 
 		if (player.velocity.vertical > 0) {
 
@@ -348,10 +347,15 @@ void pauseUpdate() {
 	//add logic in future, so If pressed on a button does an action
 	//every button has an action attached to it
 
-	tSelect.position.x = tCurrentSelect->position.x;
+	tSelect.position.x = tCurrentSelect->position.x - tSelect.width - 20;
 	tSelect.position.y = tCurrentSelect->position.y;
-	tSelect.width = tCurrentSelect->width;
-	tSelect.height = tCurrentSelect->height;
+
+}
+
+void deathUpdate() {
+
+	tSelect.position.x = tCurrentSelect->position.x - tSelect.width - 20;
+	tSelect.position.y = tCurrentSelect->position.y;
 
 }
 

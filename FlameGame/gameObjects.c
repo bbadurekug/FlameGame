@@ -5,6 +5,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+extern int levelID;
+
 void readLevelData(int levelID) {
 
 	char ID[3];
@@ -95,6 +97,14 @@ void tExitLogic() {
 void tResumeLogic() {
 
 	player.velocity.horizontal = 0;
+	gameState = GAMEPLAY;
+
+}
+
+void tTryAgainLogic() {
+
+	player.velocity.horizontal = 0;
+	readLevelData(levelID);
 	gameState = GAMEPLAY;
 
 }

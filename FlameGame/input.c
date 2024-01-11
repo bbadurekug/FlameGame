@@ -115,12 +115,33 @@ void input() {
 				boxes[i].frame = 1;
 		}
 
+		//devtools section
+
+		if (event.key.keysym.sym == SDLK_LEFT) {
+
+			readLevelData(--levelID);
+
+		}
+
+		if (event.key.keysym.sym == SDLK_RIGHT) {
+
+			readLevelData(++levelID);
+
+		}
+
 		break;
+
 	case SDL_KEYUP:
-		if (event.key.keysym.sym == SDLK_a && player.velocity.horizontal < 0)
+		if (event.key.keysym.sym == SDLK_a && player.velocity.horizontal < 0) {
 			player.velocity.horizontal = 0;
-		if (event.key.keysym.sym == SDLK_d && player.velocity.horizontal > 0)
+			playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
+			player.frame = 0;
+		}
+		if (event.key.keysym.sym == SDLK_d && player.velocity.horizontal > 0) {
 			player.velocity.horizontal = 0;
+			playerAnimationTime = PLAYER_WALK_ANIMATION_TIME;
+			player.frame = 0;
+		}
 		if (event.key.keysym.sym == SDLK_i && teleport.isActive && teleport.grounded)
 		{
 			player.position.x = teleport.position.x;
@@ -154,14 +175,14 @@ void pauseInput() {
 		//in the future make it so all of the buttons on a screen are apart of a linked listed and tSelect can move to a buttons neightbours
 		//every button should also have an action attached to it "exit" "resume" "lower volume" and so on
 
-		if (pauseEvent.key.keysym.sym == SDLK_s || pauseEvent.key.keysym.sym == SDLK_DOWN && tSelect.position.y == tResume.position.y) {
+		if (pauseEvent.key.keysym.sym == SDLK_s || pauseEvent.key.keysym.sym == SDLK_DOWN) {
 
 			if(tCurrentSelect->below != NULL)
 				tCurrentSelect = tCurrentSelect->below;
 
 		}
 
-		if (pauseEvent.key.keysym.sym == SDLK_w || pauseEvent.key.keysym.sym == SDLK_UP && tSelect.position.y == tExit.position.y) {
+		if (pauseEvent.key.keysym.sym == SDLK_w || pauseEvent.key.keysym.sym == SDLK_UP) {
 
 			if (tCurrentSelect->above != NULL)
 				tCurrentSelect = tCurrentSelect->above;
@@ -176,4 +197,31 @@ void pauseInput() {
 
 		break;
 	}
+}
+
+void deathInput() {
+
+	SDL_Event deathEvent;
+	SDL_PollEvent(&deathEvent);
+
+	switch (deathEvent.type) {
+
+	case SDL_QUIT:
+		gameRunning = FALSE;
+		break;
+	case SDL_KEYDOWN:
+
+		if (deathEvent.key.keysym.sym == SDLK_p)
+			gameRunning = FALSE;
+
+		if (deathEvent.key.keysym.sym == SDLK_RETURN) {
+
+			tTryAgain.logic();
+
+		}
+
+		break;
+	}
+
+
 }

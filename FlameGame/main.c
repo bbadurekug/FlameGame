@@ -4,6 +4,8 @@
 #include"render.h"
 #include"manager.h"
 
+//TO DO change the player hitbox on falling boxes, seems unfair sometimes
+
 extern int gameRunning;
 extern int gamePaused;
 extern enum GameState gameState;
@@ -41,11 +43,11 @@ int main(int argc, char* args[]) {
 			break;
 
 		case DEATHSTATE:
-
+			deathUpdate();
+			deathInput();
+			render();
 			break;
 		}
-
-		
 
 	}
 

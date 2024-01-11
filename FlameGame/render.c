@@ -94,7 +94,14 @@ void render() {
 		(int)goal.height
 	};
 
-	SDL_RenderCopy(renderer, goal.texture, NULL, &goalRect);
+	SDL_Rect goalFrameRect = {
+		(goal.width / 2.0) * goal.frame,
+		0,
+		goal.width / 2.0,
+		goal.height / 2.0
+	};
+
+	SDL_RenderCopy(renderer, goal.texture, &goalFrameRect, &goalRect);
 
 	SDL_Rect fireballRect = {
 		(int)fireball.position.x,
@@ -284,15 +291,84 @@ void render() {
 
 		SDL_Rect tSelectRect = {
 
-			(int)tSelect.position.x - 10,
-			(int)tSelect.position.y - 10,
-			(int)tSelect.width + 20,
-			(int)tSelect.height + 20
+			(int)tSelect.position.x,
+			(int)tSelect.position.y,
+			(int)tSelect.width,
+			(int)tSelect.height
 
 		};
 
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 64);
-		SDL_RenderFillRect(renderer, &tSelectRect);
+		SDL_RenderCopy(renderer, tSelect.texture, NULL, &tSelectRect);
+
+	}
+	else if (gameState == DEATHSTATE) {
+
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+
+		SDL_Rect tRedScreen = {
+
+			0,
+			0,
+			WINDOW_WIDTH,
+			WINDOW_HEIGHT
+
+		};
+
+		SDL_RenderFillRect(renderer, &tRedScreen);
+
+		SDL_Rect tDeadBoxRect = {
+
+			(int)tDead.position.x - 10,
+			(int)tDead.position.y - 10,
+			(int)tDead.width + 20,
+			(int)tDead.height + 20
+
+		};
+
+		SDL_Rect tDeadTextRect = {
+
+			(int)tDead.position.x,
+			(int)tDead.position.y,
+			(int)tDead.width,
+			(int)tDead.height
+
+		};
+
+		SDL_RenderCopy(renderer, tDead.backgroundTexture, NULL, &tDeadBoxRect);
+		SDL_RenderCopy(renderer, tDead.textTexture, NULL, &tDeadTextRect);
+
+		SDL_Rect tTryAgainBoxRect = {
+
+			(int)tTryAgain.position.x - 10,
+			(int)tTryAgain.position.y - 10,
+			(int)tTryAgain.width + 20,
+			(int)tTryAgain.height + 20
+
+		};
+
+		SDL_Rect tTryAgainTextRect = {
+
+			(int)tTryAgain.position.x,
+			(int)tTryAgain.position.y,
+			(int)tTryAgain.width,
+			(int)tTryAgain.height
+
+		};
+
+		SDL_RenderCopy(renderer, tTryAgain.backgroundTexture, NULL, &tTryAgainBoxRect);
+		SDL_RenderCopy(renderer, tTryAgain.textTexture, NULL, &tTryAgainTextRect);
+
+		SDL_Rect tSelectRect = {
+
+			(int)tSelect.position.x,
+			(int)tSelect.position.y,
+			(int)tSelect.width,
+			(int)tSelect.height
+
+		};
+
+		SDL_RenderCopy(renderer, tSelect.texture, NULL, &tSelectRect);
 
 	}
 
