@@ -48,7 +48,7 @@ void update() {
 		player.velocity.vertical += 10;
 	}
 
-	if (array_checkCollisionCeiling(player, boxes, nBoxes) != -1)
+	if (array_checkCollisionCeilingBoxes(player, boxes, nBoxes) != -1)
 	{
 		//this means that the player has died
 		tCurrentSelect = &tTryAgain;

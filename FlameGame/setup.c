@@ -89,8 +89,8 @@ void setup() {
 	tExit.below = NULL;
 	tExit.logic = tExitLogic;
 
-	tSelect.position.x = 0;
-	tSelect.position.y = 0;
+	tSelect.position.x = -64;
+	tSelect.position.y = -64;
 	tSelect.width = 64;
 	tSelect.height = 64;
 	tSelect.texture = loadTexture("./Textures/arrow.png");
@@ -121,12 +121,14 @@ void setup() {
 	platformTexture = loadTexture("./Textures/brickTest.png");
 	boxTexture = loadTexture("./Textures/boxTest.png");
 
-	//to zmenic
-	tPaused.backgroundTexture = platformTexture;
-	tResume.backgroundTexture = platformTexture;
-	tExit.backgroundTexture = platformTexture;
-	tDead.backgroundTexture = platformTexture;
-	tTryAgain.backgroundTexture = platformTexture;
+
+	//buttons feel a bit squished but its okay for now
+	//make a different texture for the top buttons, that cannot be selected, so they are seperated from the selectable ones
+	tPaused.backgroundTexture = loadTexture("./Textures/buttonSmall.png");
+	tResume.backgroundTexture = tPaused.backgroundTexture;
+	tExit.backgroundTexture = tPaused.backgroundTexture;
+	tDead.backgroundTexture = tPaused.backgroundTexture;
+	tTryAgain.backgroundTexture = tPaused.backgroundTexture;
 
 	goal.width = 64;
 	goal.height = 64;

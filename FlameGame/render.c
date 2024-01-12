@@ -76,6 +76,97 @@ void renderMultipleObjectsTexture(SDL_Renderer* renderer, GameObject* objects, i
 
 }
 
+void renderTextBox(SDL_Renderer* renderer, TextBox textBox) {
+
+	SDL_Rect textBoxLeftBoxRect = {
+
+			(int)textBox.position.x - 10,
+			(int)textBox.position.y - 10,
+			5,
+			(int)textBox.height + 20
+
+	};
+
+	SDL_Rect textBoxLeftFrameRect = {
+
+		0,
+		0,
+		1,
+		64
+	};
+
+	SDL_RenderCopy(renderer, textBox.backgroundTexture, &textBoxLeftFrameRect, &textBoxLeftBoxRect);
+
+	SDL_Rect textBoxMiddleBoxRect = {
+
+		(int)textBox.position.x - 5,
+		(int)textBox.position.y - 10,
+		(int)textBox.width + 5,
+		(int)textBox.height + 20
+
+	};
+
+	SDL_Rect textBoxMiddleFrameRect = {
+
+		1,
+		0,
+		1,
+		64
+	};
+
+	SDL_RenderCopy(renderer, textBox.backgroundTexture, &textBoxMiddleFrameRect, &textBoxMiddleBoxRect);
+
+	SDL_Rect textBoxShadeBoxRect = {
+
+		(int)(textBox.position.x + textBox.width - 5),
+		(int)textBox.position.y - 10,
+		5,
+		(int)textBox.height + 20
+
+	};
+
+	SDL_Rect textBoxShadeFrameRect = {
+
+		2,
+		0,
+		1,
+		64
+	};
+
+	SDL_RenderCopy(renderer, textBox.backgroundTexture, &textBoxShadeFrameRect, &textBoxShadeBoxRect);
+
+	SDL_Rect textBoxRightBoxRect = {
+
+		(int)(textBox.position.x + textBox.width),
+		(int)textBox.position.y - 10,
+		5,
+		(int)textBox.height + 20
+
+	};
+
+	SDL_Rect textBoxRightFrameRect = {
+
+		0,
+		0,
+		1,
+		64
+	};
+
+	SDL_RenderCopy(renderer, textBox.backgroundTexture, &textBoxRightFrameRect, &textBoxRightBoxRect);
+
+	SDL_Rect textBoxTextRect = {
+
+		(int)textBox.position.x,
+		(int)textBox.position.y,
+		(int)textBox.width,
+		(int)textBox.height
+
+	};
+
+	SDL_RenderCopy(renderer, textBox.textTexture, NULL, &textBoxTextRect);
+
+}
+
 void render() {
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -130,7 +221,7 @@ void render() {
 	};
 
 	SDL_Rect playerFrameRect = {
-		(player.width / 2.0)* player.frame,
+		(player.width / 2.0) * player.frame,
 		0,
 		player.width / 2.0,
 		player.height / 2.0
@@ -226,7 +317,7 @@ void render() {
 
 		SDL_RenderFillRect(renderer, &tBlackScreen);
 
-		SDL_Rect tPausedBoxRect = {
+		/*SDL_Rect tPausedBoxRect = {
 
 			(int)tPaused.position.x - 10,
 			(int)tPaused.position.y - 10,
@@ -234,6 +325,8 @@ void render() {
 			(int)tPaused.height + 20
 
 		};
+
+		SDL_RenderCopy(renderer, tPaused.backgroundTexture, NULL, &tPausedBoxRect);
 
 		SDL_Rect tPausedTextRect = {
 
@@ -244,50 +337,11 @@ void render() {
 
 		};
 
-		SDL_RenderCopy(renderer, tPaused.backgroundTexture, NULL, &tPausedBoxRect);
-		SDL_RenderCopy(renderer, tPaused.textTexture, NULL, &tPausedTextRect);
+		SDL_RenderCopy(renderer, tPaused.textTexture, NULL, &tPausedTextRect);*/
 
-		SDL_Rect tResumeBoxRect = {
-
-			(int)tResume.position.x - 10,
-			(int)tResume.position.y - 10,
-			(int)tResume.width + 20,
-			(int)tResume.height + 20
-
-		};
-
-		SDL_Rect tResumeTextRect = {
-
-			(int)tResume.position.x,
-			(int)tResume.position.y,
-			(int)tResume.width,
-			(int)tResume.height
-
-		};
-
-		SDL_RenderCopy(renderer, tResume.backgroundTexture, NULL, &tResumeBoxRect);
-		SDL_RenderCopy(renderer, tResume.textTexture, NULL, &tResumeTextRect);
-
-		SDL_Rect tExitBoxRect = {
-
-			(int)tExit.position.x - 10,
-			(int)tExit.position.y - 10,
-			(int)tExit.width + 20,
-			(int)tExit.height + 20
-
-		};
-
-		SDL_Rect tExitTextRect = {
-
-			(int)tExit.position.x,
-			(int)tExit.position.y,
-			(int)tExit.width,
-			(int)tExit.height
-
-		};
-
-		SDL_RenderCopy(renderer, tExit.backgroundTexture, NULL, &tExitBoxRect);
-		SDL_RenderCopy(renderer, tExit.textTexture, NULL, &tExitTextRect);
+		renderTextBox(renderer, tPaused);
+		renderTextBox(renderer, tResume);
+		renderTextBox(renderer, tExit);
 
 		SDL_Rect tSelectRect = {
 
@@ -317,47 +371,8 @@ void render() {
 
 		SDL_RenderFillRect(renderer, &tRedScreen);
 
-		SDL_Rect tDeadBoxRect = {
-
-			(int)tDead.position.x - 10,
-			(int)tDead.position.y - 10,
-			(int)tDead.width + 20,
-			(int)tDead.height + 20
-
-		};
-
-		SDL_Rect tDeadTextRect = {
-
-			(int)tDead.position.x,
-			(int)tDead.position.y,
-			(int)tDead.width,
-			(int)tDead.height
-
-		};
-
-		SDL_RenderCopy(renderer, tDead.backgroundTexture, NULL, &tDeadBoxRect);
-		SDL_RenderCopy(renderer, tDead.textTexture, NULL, &tDeadTextRect);
-
-		SDL_Rect tTryAgainBoxRect = {
-
-			(int)tTryAgain.position.x - 10,
-			(int)tTryAgain.position.y - 10,
-			(int)tTryAgain.width + 20,
-			(int)tTryAgain.height + 20
-
-		};
-
-		SDL_Rect tTryAgainTextRect = {
-
-			(int)tTryAgain.position.x,
-			(int)tTryAgain.position.y,
-			(int)tTryAgain.width,
-			(int)tTryAgain.height
-
-		};
-
-		SDL_RenderCopy(renderer, tTryAgain.backgroundTexture, NULL, &tTryAgainBoxRect);
-		SDL_RenderCopy(renderer, tTryAgain.textTexture, NULL, &tTryAgainTextRect);
+		renderTextBox(renderer, tDead);
+		renderTextBox(renderer, tTryAgain);
 
 		SDL_Rect tSelectRect = {
 

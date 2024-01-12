@@ -20,6 +20,8 @@ int array_checkCollisionGround(GameObject entity, GameObject* ground, int nObjec
 
 int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObjects);
 
+int array_checkCollisionCeilingBoxes(GameObject entity, GameObject* ground, int nObjects);
+
 int array_checkCollisionWallLeft(GameObject entity, GameObject* ground, int nObjects);
 
 int array_checkCollisionWallRight(GameObject entity, GameObject* ground, int nObjects);
