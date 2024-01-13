@@ -133,9 +133,10 @@ void setup() {
 	goal.width = 64;
 	goal.height = 64;
 	goal.texture = loadTexture("./Textures/goalTest.png");
-	goal.frame = 1;
-	//this is the opened door frame, possible key idea to open doors
-	//key could behave like a box, could make some interesting puzzles
+
+	doorKey.width = 64;
+	doorKey.height = 64;
+	doorKey.texture = loadTexture("./Textures/doorKey.png");
 
 	teleport.position.x = 0;
 	teleport.position.y = 0;

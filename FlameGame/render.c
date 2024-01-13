@@ -194,6 +194,17 @@ void render() {
 
 	SDL_RenderCopy(renderer, goal.texture, &goalFrameRect, &goalRect);
 
+	if (goal.frame == 0) {
+		SDL_Rect doorKeyRect = {
+			(int)doorKey.position.x,
+			(int)doorKey.position.y,
+			(int)doorKey.width,
+			(int)doorKey.height
+		};
+
+		SDL_RenderCopy(renderer, doorKey.texture, NULL, &doorKeyRect);
+	}
+
 	SDL_Rect fireballRect = {
 		(int)fireball.position.x,
 		(int)fireball.position.y,
@@ -316,28 +327,6 @@ void render() {
 		};
 
 		SDL_RenderFillRect(renderer, &tBlackScreen);
-
-		/*SDL_Rect tPausedBoxRect = {
-
-			(int)tPaused.position.x - 10,
-			(int)tPaused.position.y - 10,
-			(int)tPaused.width + 20,
-			(int)tPaused.height + 20
-
-		};
-
-		SDL_RenderCopy(renderer, tPaused.backgroundTexture, NULL, &tPausedBoxRect);
-
-		SDL_Rect tPausedTextRect = {
-
-			(int)tPaused.position.x,
-			(int)tPaused.position.y,
-			(int)tPaused.width,
-			(int)tPaused.height
-
-		};
-
-		SDL_RenderCopy(renderer, tPaused.textTexture, NULL, &tPausedTextRect);*/
 
 		renderTextBox(renderer, tPaused);
 		renderTextBox(renderer, tResume);

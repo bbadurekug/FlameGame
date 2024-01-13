@@ -85,6 +85,7 @@ SDL_Texture* boxTexture;
 int nBoxes;
 
 GameObject goal;
+GameObject doorKey;
 
 TextBox tPaused;
 TextBox tResume;

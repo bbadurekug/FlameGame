@@ -333,12 +333,20 @@ void update() {
 	else
 		blizzard.isActive = 0;
 
-	if (checkCollision(player, goal) ||
-		checkIsInsideObjectSingular(player, goal)) 
+	if ((checkCollision(player, goal) ||
+		checkIsInsideObjectSingular(player, goal)) &&
+		goal.frame == 1)
 	{
 		levelID++;
 		freeMemory();
 		readLevelData(levelID);
+	}
+
+	if ((checkCollision(player, doorKey) ||
+		checkIsInsideObjectSingular(player, doorKey)) &&
+		goal.frame == 0)
+	{
+		goal.frame = 1;
 	}
 }
 
