@@ -112,3 +112,16 @@ void tTryAgainLogic() {
 	gameState = GAMEPLAY;
 
 }
+
+void tPlayLogic() {
+
+	readLevelData(levelID);
+	gameState = GAMEPLAY;
+
+}
+
+void tQuitLogic() {
+
+	gameRunning = FALSE;
+
+}

@@ -10,4 +10,6 @@ void pauseUpdate();
 
 void deathUpdate();
 
+void titleUpdate();
+
 #endif // !UPDATE_H

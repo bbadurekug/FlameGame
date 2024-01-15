@@ -225,3 +225,43 @@ void deathInput() {
 
 
 }
+
+void titleInput() {
+
+	SDL_Event titleEvent;
+	SDL_PollEvent(&titleEvent);
+
+	switch (titleEvent.type) {
+
+	case SDL_QUIT:
+		gameRunning = FALSE;
+		break;
+	case SDL_KEYDOWN:
+
+		if (titleEvent.key.keysym.sym == SDLK_p)
+			gameRunning = FALSE;
+
+		if (titleEvent.key.keysym.sym == SDLK_s || titleEvent.key.keysym.sym == SDLK_DOWN) {
+
+			if (tCurrentSelect->below != NULL)
+				tCurrentSelect = tCurrentSelect->below;
+
+		}
+
+		if (titleEvent.key.keysym.sym == SDLK_w || titleEvent.key.keysym.sym == SDLK_UP) {
+
+			if (tCurrentSelect->above != NULL)
+				tCurrentSelect = tCurrentSelect->above;
+
+		}
+
+		if (titleEvent.key.keysym.sym == SDLK_RETURN) {
+
+			tCurrentSelect->logic();
+
+		}
+
+		break;
+	}
+
+}

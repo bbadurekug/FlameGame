@@ -378,3 +378,46 @@ void render() {
 
 	SDL_RenderPresent(renderer);
 }
+
+void titleRender() {
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderClear(renderer);
+
+	//temporary solution, will make a background later
+
+	for (int j = 0; j < (WINDOW_WIDTH / BRICK_WIDTH); j++) {
+
+		for (int k = 0; k < (WINDOW_HEIGHT / BRICK_HEIGHT); k++) {
+
+			SDL_Rect objectsRect = {
+
+				0 + j * BRICK_WIDTH,
+				0 + k * BRICK_HEIGHT,
+				BRICK_WIDTH,
+				BRICK_HEIGHT
+
+			};
+
+			SDL_RenderCopy(renderer, platformTexture, NULL, &objectsRect);
+		}
+	}
+
+	SDL_Rect tSelectRect = {
+
+			(int)tSelect.position.x,
+			(int)tSelect.position.y,
+			(int)tSelect.width,
+			(int)tSelect.height
+
+	};
+
+	SDL_RenderCopy(renderer, tSelect.texture, NULL, &tSelectRect);
+
+	renderTextBox(renderer, tTitle);
+	renderTextBox(renderer, tPlay);
+	renderTextBox(renderer, tQuit);
+
+	SDL_RenderPresent(renderer);
+
+}

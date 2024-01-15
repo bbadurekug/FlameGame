@@ -21,7 +21,9 @@ int main(int argc, char* args[]) {
 		switch (gameState) {
 
 		case TITLESCREEN:
-
+			titleUpdate();
+			titleInput();
+			titleRender();
 			break;
 
 		case GAMEPLAY:

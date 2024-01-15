@@ -8,4 +8,6 @@ void pauseInput();
 
 void deathInput();
 
+void titleInput();
+
 #endif // !INPUT_H

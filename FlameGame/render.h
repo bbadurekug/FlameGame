@@ -4,4 +4,6 @@
 
 void render();
 
+void titleRender();
+
 #endif // !RENDER_H

@@ -51,10 +51,12 @@ void readLevelData(int levelID);
 void freeMemory();
 
 void tExitLogic();
-
 void tResumeLogic();
 
 void tTryAgainLogic();
+
+void tPlayLogic();
+void tQuitLogic();
 
 GameObject player;
 float playerAnimationTime;
@@ -90,8 +92,14 @@ GameObject doorKey;
 TextBox tPaused;
 TextBox tResume;
 TextBox tExit;
+
 TextBox tDead;
 TextBox tTryAgain;
+
+TextBox tTitle;
+TextBox tPlay;
+TextBox tQuit;
+
 GameObject tSelect;
 TextBox *tCurrentSelect;
 

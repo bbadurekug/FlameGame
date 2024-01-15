@@ -11,7 +11,7 @@ SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
 
 int gameRunning = FALSE;
-int levelID = 1;
+int levelID = 7;
 extern enum GameState gameState;
 
 int initializeWindow() {
@@ -61,9 +61,11 @@ SDL_Texture* createTextTexture(TTF_Font* font, const char* text, SDL_Color color
 
 void setup() {
 
-	gameState = GAMEPLAY;
+	gameState = TITLESCREEN;
 		
 	font = TTF_OpenFont("./Fonts/PressStart2P-Regular.ttf", 24);
+
+	tCurrentSelect = &tPlay;
 
 	tPaused.textTexture = createTextTexture(font, "Paused", (SDL_Color){ 255, 255, 255, 255 });
 	tPaused.width = 300;
@@ -89,12 +91,6 @@ void setup() {
 	tExit.below = NULL;
 	tExit.logic = tExitLogic;
 
-	tSelect.position.x = -64;
-	tSelect.position.y = -64;
-	tSelect.width = 64;
-	tSelect.height = 64;
-	tSelect.texture = loadTexture("./Textures/arrow.png");
-
 	tDead.textTexture = createTextTexture(font, "You Died :(", (SDL_Color) { 255, 255, 255, 255 });
 	tDead.width = 550;
 	tDead.height = 96;
@@ -109,8 +105,36 @@ void setup() {
 	tTryAgain.above = NULL;
 	tTryAgain.below = NULL;
 	tTryAgain.logic = tTryAgainLogic;
-	
-	readLevelData(levelID);
+
+	tTitle.textTexture = createTextTexture(font, "Game Name Here", (SDL_Color) { 255, 255, 255, 255 });
+	tTitle.width = 500;
+	tTitle.height = 96;
+	tTitle.position.x = (WINDOW_WIDTH / 2) - (tTitle.width) / 2;
+	tTitle.position.y = (WINDOW_HEIGHT / 4) - (tTitle.height) / 2;
+
+	tPlay.textTexture = createTextTexture(font, "Play", (SDL_Color) { 255, 255, 255, 255 });
+	tPlay.width = 250;
+	tPlay.height = 64;
+	tPlay.position.x = (WINDOW_WIDTH / 2) - (tPlay.width) / 2;
+	tPlay.position.y = (WINDOW_HEIGHT / 2) - (tPlay.height) / 2;
+	tPlay.below = &tQuit;
+	tPlay.above = NULL;
+	tPlay.logic = tPlayLogic;
+
+	tQuit.textTexture = createTextTexture(font, "Quit", (SDL_Color) { 255, 255, 255, 255 });
+	tQuit.width = 250;
+	tQuit.height = 64;
+	tQuit.position.x = (WINDOW_WIDTH / 2) - (tQuit.width) / 2;
+	tQuit.position.y = (WINDOW_HEIGHT - (WINDOW_HEIGHT / 3)) - (tExit.height) / 2;
+	tQuit.below = NULL;
+	tQuit.above = &tPlay;
+	tQuit.logic = tQuitLogic;
+
+	tSelect.position.x = tPlay.position.x - tSelect.width - 20;
+	tSelect.position.y = tPlay.position.y;
+	tSelect.width = 64;
+	tSelect.height = 64;
+	tSelect.texture = loadTexture("./Textures/arrow.png");
 
 	player.width = 64;
 	player.height = 64;
@@ -129,6 +153,9 @@ void setup() {
 	tExit.backgroundTexture = tPaused.backgroundTexture;
 	tDead.backgroundTexture = tPaused.backgroundTexture;
 	tTryAgain.backgroundTexture = tPaused.backgroundTexture;
+	tTitle.backgroundTexture = tPaused.backgroundTexture;
+	tPlay.backgroundTexture = tPaused.backgroundTexture;
+	tQuit.backgroundTexture = tPaused.backgroundTexture;
 
 	goal.width = 64;
 	goal.height = 64;

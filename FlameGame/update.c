@@ -191,7 +191,8 @@ void update() {
 	{
 		boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].frame = 0;
 		fireballCollisionIndex = array_checkCollisionWallRight(fireball, boxes, nBoxes);
-		fireball.position.x = boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].position.x + fireball.width;
+		fireball.position.x = boxes[fireballCollisionIndex].position.x + fireball.width;
+		fireball.position.y = boxes[fireballCollisionIndex].position.y;
 		fireballActiveTime = FIREBALL_DECAY_TIME;
 		fireball.velocity.horizontal = 0;
 		fireball.grounded = 1;
@@ -201,7 +202,8 @@ void update() {
 	{
 		boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].frame = 0;
 		fireballCollisionIndex = array_checkCollisionWallLeft(fireball, boxes, nBoxes);
-		fireball.position.x = boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].position.x - fireball.width;
+		fireball.position.x = boxes[fireballCollisionIndex].position.x - fireball.width;
+		fireball.position.y = boxes[fireballCollisionIndex].position.y;
 		fireballActiveTime = FIREBALL_DECAY_TIME;
 		fireball.velocity.horizontal = 0;
 		fireball.grounded = 1;
@@ -365,6 +367,12 @@ void deathUpdate() {
 	tSelect.position.x = tCurrentSelect->position.x - tSelect.width - 20;
 	tSelect.position.y = tCurrentSelect->position.y;
 
+}
+
+void titleUpdate() {
+
+	tSelect.position.x = tCurrentSelect->position.x - tSelect.width - 20;
+	tSelect.position.y = tCurrentSelect->position.y;
 }
 
 void loadScreenUpdate() {
