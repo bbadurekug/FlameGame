@@ -48,13 +48,6 @@ void update() {
 		player.velocity.vertical += 10;
 	}
 
-	if (array_checkCollisionCeilingBoxes(player, boxes, nBoxes) != -1)
-	{
-		//this means that the player has died
-		tCurrentSelect = &tTryAgain;
-		gameState = DEATHSTATE;
-	}
-
 	player.position.x += player.velocity.horizontal * deltaTime;
 
 	if (array_checkCollisionWallLeft(player, platforms, nPlatforms) != -1)
@@ -114,6 +107,14 @@ void update() {
 
 	for (int i = 0; i < nBoxes; i++) {
 
+		if (checkCollisionCeiling(player, boxes[i]) &&
+			boxes[i].velocity.vertical > 0)
+		{
+			//this means that the player has died
+			tCurrentSelect = &tTryAgain;
+			gameState = DEATHSTATE;
+		}
+
 		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {
 			boxes[i].position.y = platforms[array_checkCollisionGround(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
 			boxes[i].velocity.vertical = 0;		
@@ -147,7 +148,6 @@ void update() {
 			if (boxes[i].velocity.vertical != 0)
 				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
-		//maybe in the future make it, so player can push two boxes at once, but thats a big maybe
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{	
 			boxes[i].velocity.horizontal = 0;
@@ -157,6 +157,12 @@ void update() {
 		{
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
+		}
+		else if (((checkCollisionWallLeft(player, boxes[i]) && player.flip == 0) ||
+				  (checkCollisionWallRight(player, boxes[i]) && player.flip == 1)) &&
+				   player.velocity.horizontal == 0)
+		{
+			boxes[i].velocity.horizontal = 0;
 		}
 		else if ((checkCollisionWallLeft(boxes[i], lightningChildLeft) ||
 				  checkCollisionWallRight(boxes[i], lightningChildLeft)) &&
@@ -180,6 +186,8 @@ void update() {
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 0;
 		}
+
+		//this whole else if section might need a rework in the future, works fine for now
 
 	}
 
@@ -246,11 +254,11 @@ void update() {
 			lightningChildRight.isActive = 1;
 
 		}
-		else if (array_checkCollisionGround(lightning, boxes, nBoxes) != -1) {
+		else if (array_checkCollisionGround(lightning, boxes, nBoxes) != -1 && lightning.frame == 0) {
 			
 			lightning.frame = 1;
 			lightning.velocity.vertical = 0;
-			lightning.position.y = boxes[array_checkCollisionGround(lightning, boxes, nBoxes)].position.y - lightning.height - 0.001;
+			lightning.position.y = boxes[array_checkCollisionGround(lightning, boxes, nBoxes)].position.y - lightning.height;
 
 			lightningChildLeft.position.y = lightning.position.y + lightningChildLeft.height;
 			lightningChildLeft.position.x = lightning.position.x - lightning.width;

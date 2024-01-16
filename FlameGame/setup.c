@@ -11,7 +11,7 @@ SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
 
 int gameRunning = FALSE;
-int levelID = 7;
+int levelID = 5;
 extern enum GameState gameState;
 
 int initializeWindow() {

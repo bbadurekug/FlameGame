@@ -189,7 +189,7 @@ void pauseInput() {
 
 		}
 
-		if (pauseEvent.key.keysym.sym == SDLK_RETURN) {
+		if (pauseEvent.key.keysym.sym == SDLK_RETURN || pauseEvent.key.keysym.sym == SDLK_SPACE) {
 
 			tCurrentSelect->logic();
 
@@ -214,7 +214,7 @@ void deathInput() {
 		if (deathEvent.key.keysym.sym == SDLK_p)
 			gameRunning = FALSE;
 
-		if (deathEvent.key.keysym.sym == SDLK_RETURN) {
+		if (deathEvent.key.keysym.sym == SDLK_RETURN || deathEvent.key.keysym.sym == SDLK_SPACE) {
 
 			tTryAgain.logic();
 
@@ -255,7 +255,7 @@ void titleInput() {
 
 		}
 
-		if (titleEvent.key.keysym.sym == SDLK_RETURN) {
+		if (titleEvent.key.keysym.sym == SDLK_RETURN || titleEvent.key.keysym.sym == SDLK_SPACE) {
 
 			tCurrentSelect->logic();
 

@@ -130,25 +130,6 @@ int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObje
 	return -1;
 }
 
-//this was implemented so the boxes falling on the players head seem more fair
-
-int array_checkCollisionCeilingBoxes(GameObject entity, GameObject* ground, int nObjects) {
-
-	for (int i = 0; i < nObjects; i++) {
-
-		if (entity.position.x + entity.width > ground[i].position.x + 5 &&
-			entity.position.x < ground[i].position.x + ground[i].width - 5 &&
-			entity.position.y < ground[i].position.y + ground[i].height &&
-			entity.position.y > ground[i].position.y)
-		{
-			return i;
-		}
-
-	}
-
-	return -1;
-}
-
 int array_checkCollisionWallLeft(GameObject entity, GameObject* ground, int nObjects) {
 
 	for (int i = 0; i < nObjects; i++) {
