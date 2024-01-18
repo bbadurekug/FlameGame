@@ -2,6 +2,7 @@
 #include<SDL.h>
 #include<SDL_image.h>
 #include<SDL_ttf.h>
+#include<SDL_mixer.h>
 #include"constants.h"
 #include"gameObjects.h"
 #include"manager.h"
@@ -9,6 +10,10 @@
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
+Mix_Music* backgroundMusic = NULL;
+Mix_Chunk* positiveSound = NULL;
+Mix_Chunk* negativeSound = NULL;
+Mix_Chunk* menuMoveSound = NULL;
 
 int gameRunning = FALSE;
 int levelID = 5;
@@ -17,10 +22,9 @@ extern enum GameState gameState;
 int initializeWindow() {
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-
 	IMG_Init(IMG_INIT_PNG);
-
 	TTF_Init();
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	window = SDL_CreateWindow(
 		"FlameGame",
@@ -62,6 +66,11 @@ SDL_Texture* createTextTexture(TTF_Font* font, const char* text, SDL_Color color
 void setup() {
 
 	gameState = TITLESCREEN;
+
+	backgroundMusic = Mix_LoadMUS("./Audio/bgMusic.wav");
+	positiveSound = Mix_LoadWAV("./Audio/positive.wav");
+	negativeSound = Mix_LoadWAV("./Audio/negative.wav");
+	menuMoveSound = Mix_LoadWAV("./Audio/menuMove.wav");
 		
 	font = TTF_OpenFont("./Fonts/PressStart2P-Regular.ttf", 24);
 
@@ -142,6 +151,7 @@ void setup() {
 	player.texture = loadTexture("./Textures/mageTest.png");
 	player.frame = 0;
 
+	backgroundTexture = loadTexture("./Textures/background.png");
 	platformTexture = loadTexture("./Textures/brickTest.png");
 	boxTexture = loadTexture("./Textures/boxTest.png");
 
@@ -212,6 +222,11 @@ void setup() {
 void destroyWindow() {
 
 	freeMemory();
+	Mix_FreeChunk(menuMoveSound);
+	Mix_FreeChunk(positiveSound);
+	Mix_FreeChunk(negativeSound);
+	Mix_FreeMusic(backgroundMusic);
+	Mix_CloseAudio();
 	TTF_CloseFont(font);
 	TTF_Quit();
 	SDL_DestroyTexture(player.texture);

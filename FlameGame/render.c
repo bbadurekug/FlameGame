@@ -174,6 +174,23 @@ void render() {
 
 	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
+	for (int j = 0; j < (WINDOW_WIDTH / BRICK_WIDTH); j++) {
+
+		for (int k = 0; k < (WINDOW_HEIGHT / BRICK_HEIGHT); k++) {
+
+			SDL_Rect objectsRect = {
+
+				0 + j * BRICK_WIDTH,
+				0 + k * BRICK_HEIGHT,
+				BRICK_WIDTH,
+				BRICK_HEIGHT
+
+			};
+
+			SDL_RenderCopy(renderer, backgroundTexture, NULL, &objectsRect);
+		}
+	}
+
 	renderMultipleObjectsTexture(renderer, platforms, nPlatforms, platformTexture);
 
 	renderObjectsTextureFrame(renderer, boxes, nBoxes, boxTexture);

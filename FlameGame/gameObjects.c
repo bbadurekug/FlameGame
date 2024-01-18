@@ -2,10 +2,12 @@
 #include"constants.h"
 #include"setup.h"
 #include"manager.h"
+#include<SDL_mixer.h>
 #include<stdio.h>
 #include<stdlib.h>
 
 extern int levelID;
+extern Mix_Music* backgroundMusic;
 
 void readLevelData(int levelID) {
 
@@ -101,6 +103,7 @@ void tExitLogic() {
 void tResumeLogic() {
 
 	player.velocity.horizontal = 0;
+	Mix_ResumeMusic();
 	gameState = GAMEPLAY;
 
 }
@@ -116,6 +119,7 @@ void tTryAgainLogic() {
 void tPlayLogic() {
 
 	readLevelData(levelID);
+	Mix_PlayMusic(backgroundMusic, -1);
 	gameState = GAMEPLAY;
 
 }

@@ -78,6 +78,8 @@ float lightningChildRightActiveTime;
 GameObject blizzard;
 float blizzardActiveTime;
 
+SDL_Texture* backgroundTexture;
+
 GameObject *platforms;
 SDL_Texture* platformTexture;
 int nPlatforms;

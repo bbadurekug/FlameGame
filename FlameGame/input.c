@@ -1,5 +1,6 @@
 #include"input.h"
 #include<SDL.h>
+#include<SDL_mixer.h>
 #include"gameObjects.h"
 #include"setup.h"
 #include"constants.h"
@@ -9,6 +10,10 @@ extern int gameRunning;
 extern int gamePaused;
 extern int levelID;
 extern enum GameState gameState;
+extern Mix_Music* backgroundMusic;
+extern Mix_Chunk* positiveSound;
+extern Mix_Chunk* negativeSound;
+extern Mix_Chunk* menuMoveSound;
 
 void input() {
 
@@ -50,6 +55,8 @@ void input() {
 		if (event.key.keysym.sym == SDLK_ESCAPE) {
 			
 			tCurrentSelect = &tResume;
+			Mix_PauseMusic();
+			Mix_PlayChannel(-1, positiveSound, 0);
 			gameState = PAUSESCREEN;
 
 		}
@@ -168,6 +175,8 @@ void pauseInput() {
 
 		if (pauseEvent.key.keysym.sym == SDLK_ESCAPE) {
 			player.velocity.horizontal = 0;
+			Mix_PlayChannel(-1, negativeSound, 0);
+			Mix_ResumeMusic();
 			gameState = GAMEPLAY;
 		}
 
@@ -177,20 +186,25 @@ void pauseInput() {
 
 		if (pauseEvent.key.keysym.sym == SDLK_s || pauseEvent.key.keysym.sym == SDLK_DOWN) {
 
-			if(tCurrentSelect->below != NULL)
+			if (tCurrentSelect->below != NULL) {
+				Mix_PlayChannel(-1, menuMoveSound, 0);
 				tCurrentSelect = tCurrentSelect->below;
+			}
 
 		}
 
 		if (pauseEvent.key.keysym.sym == SDLK_w || pauseEvent.key.keysym.sym == SDLK_UP) {
 
-			if (tCurrentSelect->above != NULL)
+			if (tCurrentSelect->above != NULL) {
+				Mix_PlayChannel(-1, menuMoveSound, 0);
 				tCurrentSelect = tCurrentSelect->above;
+			}
 
 		}
 
 		if (pauseEvent.key.keysym.sym == SDLK_RETURN || pauseEvent.key.keysym.sym == SDLK_SPACE) {
 
+			Mix_PlayChannel(-1, positiveSound, 0);
 			tCurrentSelect->logic();
 
 		}
@@ -216,6 +230,7 @@ void deathInput() {
 
 		if (deathEvent.key.keysym.sym == SDLK_RETURN || deathEvent.key.keysym.sym == SDLK_SPACE) {
 
+			Mix_PlayChannel(-1, positiveSound, 0);
 			tTryAgain.logic();
 
 		}
@@ -243,20 +258,25 @@ void titleInput() {
 
 		if (titleEvent.key.keysym.sym == SDLK_s || titleEvent.key.keysym.sym == SDLK_DOWN) {
 
-			if (tCurrentSelect->below != NULL)
+			if (tCurrentSelect->below != NULL) {
+				Mix_PlayChannel(-1, menuMoveSound, 0);
 				tCurrentSelect = tCurrentSelect->below;
+			}
 
 		}
 
 		if (titleEvent.key.keysym.sym == SDLK_w || titleEvent.key.keysym.sym == SDLK_UP) {
 
-			if (tCurrentSelect->above != NULL)
+			if (tCurrentSelect->above != NULL) {
+				Mix_PlayChannel(-1, menuMoveSound, 0);
 				tCurrentSelect = tCurrentSelect->above;
+			};
 
 		}
 
 		if (titleEvent.key.keysym.sym == SDLK_RETURN || titleEvent.key.keysym.sym == SDLK_SPACE) {
 
+			Mix_PlayChannel(-1, positiveSound, 0);
 			tCurrentSelect->logic();
 
 		}
