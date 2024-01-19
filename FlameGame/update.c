@@ -21,19 +21,23 @@ void deltaTimeCalculation() {
 
 void update() {
 
-	//printf("%f %f %f %f\n", player.position.x, player.position.y, player.velocity.horizontal, player.velocity.vertical);
+	printf("%f %f %f %f\n", player.position.x, player.position.y, player.velocity.horizontal, player.velocity.vertical);
 
 	//printf("%d\n", array_checkCollisionGround(player, platforms, nPlatforms));
 
 	if (array_checkCollisionGround(player, platforms, nPlatforms) != -1 && player.velocity.vertical > 0) {
 
 		player.grounded = 1;
+		//I have no clue why, but the player vertical velocity seems to gravitate to 6 for some reason
+		if (player.velocity.vertical > 0) player.velocity.vertical = 6;
 		player.position.y = platforms[array_checkCollisionGround(player, platforms, nPlatforms)].position.y - player.height;
 		if(player.frame > 1) player.frame = 0;
 	}
 	else if (array_checkCollisionGround(player, boxes, nBoxes) != -1 && player.velocity.vertical > 0) {
 
 		player.grounded = 1;
+		//I have no clue why, but the player vertical velocity seems to gravitate to 6 for some reason
+		if (player.velocity.vertical > 0) player.velocity.vertical = 6;
 		player.position.y = boxes[array_checkCollisionGround(player, boxes, nBoxes)].position.y - player.height;
 		if (player.frame > 1)  player.frame = 0;
 	}
@@ -129,7 +133,7 @@ void update() {
 			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
 		}
 
-		//printf("box:%d pos:%f vel:%f \n", i, boxes[i].position.x, boxes[i].velocity.horizontal);
+		//printf("box:%d pos:%f vel:%f \n", i, boxes[i].position.x, boxes[i].velocity.vertical);
 
 		if(!boxes[i].grounded)
 			boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
@@ -150,13 +154,15 @@ void update() {
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{	
-			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
+			if (boxes[i].velocity.vertical != 0 && boxes[i].frame == 0)
+				boxes[i].position.x = (int)boxes[i].position.x - 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
-			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
+			if (boxes[i].velocity.vertical != 0 && boxes[i].frame == 0)
+				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
 		else if (((checkCollisionWallLeft(player, boxes[i]) && player.flip == 0) ||
 				  (checkCollisionWallRight(player, boxes[i]) && player.flip == 1)) &&
