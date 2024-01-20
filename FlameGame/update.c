@@ -21,7 +21,7 @@ void deltaTimeCalculation() {
 
 void update() {
 
-	printf("%f %f %f %f\n", player.position.x, player.position.y, player.velocity.horizontal, player.velocity.vertical);
+	//printf("%f %f %f %f\n", player.position.x, player.position.y, player.velocity.horizontal, player.velocity.vertical);
 
 	//printf("%d\n", array_checkCollisionGround(player, platforms, nPlatforms));
 
@@ -164,6 +164,7 @@ void update() {
 			if (boxes[i].velocity.vertical != 0 && boxes[i].frame == 0)
 				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
+		//there is an issue, where if the box is touching a wall, it ignores lightning, even if it pushes the box away from the wall
 		else if (((checkCollisionWallLeft(player, boxes[i]) && player.flip == 0) ||
 				  (checkCollisionWallRight(player, boxes[i]) && player.flip == 1)) &&
 				   player.velocity.horizontal == 0)
@@ -245,11 +246,11 @@ void update() {
 		lightningActiveTime -= deltaTime;
 		lightning.position.y += lightning.velocity.vertical * deltaTime;
 
-		if (array_checkCollisionGround(lightning, platforms, nPlatforms) != -1) {
+		if (array_checkCollisionGround(lightning, platforms, nPlatforms) != -1 && lightning.frame == 0) {
 			
 			lightning.frame = 1;
 			lightning.velocity.vertical = 0;
-			lightning.position.y = platforms[array_checkCollisionGround(lightning, platforms, nPlatforms)].position.y - lightning.height - 0.001;
+			lightning.position.y = platforms[array_checkCollisionGround(lightning, platforms, nPlatforms)].position.y - lightning.height;
 
 			lightningChildLeft.position.y = lightning.position.y + lightningChildLeft.height;
 			lightningChildLeft.position.x = lightning.position.x - lightning.width;

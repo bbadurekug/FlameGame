@@ -61,8 +61,10 @@ void input() {
 
 		}
 
-		if (event.key.keysym.sym == SDLK_r)
+		if (event.key.keysym.sym == SDLK_r) {
+			Mix_PlayChannel(-1, negativeSound, 0);
 			readLevelData(levelID);
+		}
 
 		if (event.key.keysym.sym == SDLK_w && player.grounded) {
 			player.grounded = 0;
