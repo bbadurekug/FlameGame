@@ -111,12 +111,16 @@ void update() {
 
 	for (int i = 0; i < nBoxes; i++) {
 
-		if (checkCollisionCeiling(player, boxes[i]) &&
-			boxes[i].velocity.vertical > 0)
+		if (checkCollisionCeiling(player, boxes[i]))
 		{
-			//this means that the player has died
-			tCurrentSelect = &tTryAgain;
-			gameState = DEATHSTATE;
+			if (boxes[i].velocity.vertical > 0) {
+				//this means that the player has died
+				tCurrentSelect = &tTryAgain;
+				gameState = DEATHSTATE;
+			}
+			else if (player.velocity.vertical < 0) {
+				player.velocity.vertical += 10;
+			}
 		}
 
 		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {
