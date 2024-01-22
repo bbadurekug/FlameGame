@@ -54,6 +54,23 @@ void update() {
 
 	player.position.x += player.velocity.horizontal * deltaTime;
 
+	for (int i = 0; i < nBoxes; i++) {
+
+		if (checkCollisionCeiling(player, boxes[i]))
+		{
+			if (boxes[i].velocity.vertical > 0) {
+				//this means that the player has died
+				tCurrentSelect = &tTryAgain;
+				gameState = DEATHSTATE;
+				return;
+			}
+			else if (player.velocity.vertical < 0) {
+				player.velocity.vertical += 10;
+			}
+		}
+
+	}
+
 	if (array_checkCollisionWallLeft(player, platforms, nPlatforms) != -1)
 	{
 		player.position.x = platforms[array_checkCollisionWallLeft(player, platforms, nPlatforms)].position.x - player.width;
@@ -111,18 +128,6 @@ void update() {
 
 	for (int i = 0; i < nBoxes; i++) {
 
-		if (checkCollisionCeiling(player, boxes[i]))
-		{
-			if (boxes[i].velocity.vertical > 0) {
-				//this means that the player has died
-				tCurrentSelect = &tTryAgain;
-				gameState = DEATHSTATE;
-			}
-			else if (player.velocity.vertical < 0) {
-				player.velocity.vertical += 10;
-			}
-		}
-
 		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {
 			boxes[i].position.y = platforms[array_checkCollisionGround(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
 			boxes[i].velocity.vertical = 0;		
@@ -144,31 +149,35 @@ void update() {
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
+		//this box logic need a rewor
+		//current issues: some boxes seem to clip into walls, and are overall not very consistent with the spacing between walls
+		//there might exist a solution using modulo 64, so the boxes are always on grid after interacting with a wall, box or lightning
+		//or maybe just a simple position setting might do the work, this system does not
+
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{	
 			boxes[i].grounded = 1;
-			if(boxes[i].velocity.vertical != 0)
+			if(boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
 				boxes[i].position.x = (int)boxes[i].position.x - 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{
 			boxes[i].grounded = 1;
-			if (boxes[i].velocity.vertical != 0)
+			if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
 				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{	
 			boxes[i].grounded = 1;
-			if (boxes[i].velocity.vertical != 0 && boxes[i].frame == 0)
+			if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
 				boxes[i].position.x = (int)boxes[i].position.x - 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
 			boxes[i].grounded = 1;
-			if (boxes[i].velocity.vertical != 0 && boxes[i].frame == 0)
+			if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
 				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
-		//there is an issue, where if the box is touching a wall, it ignores lightning, even if it pushes the box away from the wall
 		else if (((checkCollisionWallLeft(player, boxes[i]) && player.flip == 0) ||
 				  (checkCollisionWallRight(player, boxes[i]) && player.flip == 1)) &&
 				   player.velocity.horizontal == 0)

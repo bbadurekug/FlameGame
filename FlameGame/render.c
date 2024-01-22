@@ -193,8 +193,6 @@ void render() {
 
 	renderMultipleObjectsTexture(renderer, platforms, nPlatforms, platformTexture);
 
-	renderObjectsTextureFrame(renderer, boxes, nBoxes, boxTexture);
-
 	SDL_Rect goalRect = {
 		(int)goal.position.x,
 		(int)goal.position.y,
@@ -210,6 +208,8 @@ void render() {
 	};
 
 	SDL_RenderCopy(renderer, goal.texture, &goalFrameRect, &goalRect);
+
+	renderObjectsTextureFrame(renderer, boxes, nBoxes, boxTexture);
 
 	if (goal.frame == 0) {
 		SDL_Rect doorKeyRect = {
