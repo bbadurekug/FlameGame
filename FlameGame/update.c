@@ -65,6 +65,7 @@ void update() {
 				return;
 			}
 			else if (player.velocity.vertical < 0) {
+				//this is a problematic part, explained on line 160
 				player.velocity.vertical += 10;
 			}
 		}
@@ -149,10 +150,15 @@ void update() {
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
-		//this box logic need a rewor
+		//this box logic need a rework
 		//current issues: some boxes seem to clip into walls, and are overall not very consistent with the spacing between walls
 		//there might exist a solution using modulo 64, so the boxes are always on grid after interacting with a wall, box or lightning
 		//or maybe just a simple position setting might do the work, this system does not
+		//possbile fix, make it so the box moves exactly 64 pixels, when touched by the lightning, so its consistent
+		//the current time system is not good enough
+
+		//ceiling collision is a bit out of place, blocks player when it shouldnt
+		//for example when the player is one block to the side and one block below the box, player gets blocked
 
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{	
@@ -169,14 +175,14 @@ void update() {
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{	
 			boxes[i].grounded = 1;
-			if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
-				boxes[i].position.x = (int)boxes[i].position.x - 1;
+			//if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
+				//boxes[i].position.x = (int)boxes[i].position.x - 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
 			boxes[i].grounded = 1;
-			if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
-				boxes[i].position.x = (int)boxes[i].position.x + 1;
+			//if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
+				//boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
 		else if (((checkCollisionWallLeft(player, boxes[i]) && player.flip == 0) ||
 				  (checkCollisionWallRight(player, boxes[i]) && player.flip == 1)) &&
@@ -206,8 +212,6 @@ void update() {
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 0;
 		}
-
-		//this whole else if section might need a rework in the future, works fine for now
 
 	}
 
