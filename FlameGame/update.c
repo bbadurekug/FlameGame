@@ -190,18 +190,6 @@ void update() {
 		{
 			boxes[i].velocity.horizontal = 0;
 		}
-		else if ((checkCollisionWallLeft(boxes[i], lightningChildLeft) ||
-				  checkCollisionWallRight(boxes[i], lightningChildLeft)) &&
-				  lightningChildLeft.isActive)
-		{
-			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
-		}
-		else if ((checkCollisionWallLeft(boxes[i], lightningChildRight) ||
-				  checkCollisionWallRight(boxes[i], lightningChildRight)) &&
-				  lightningChildRight.isActive)
-		{
-			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
-		}
 		else if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
 			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
 		{
@@ -212,6 +200,32 @@ void update() {
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 0;
 		}
+
+		if (lightningChildLeft.isActive)
+		{
+			if (checkCollisionWallLeft(boxes[i], lightningChildLeft)) {
+				boxes[i].position.x -= 64;
+				lightningChildLeft.isActive = 0;
+			}
+			else if (checkCollisionWallRight(boxes[i], lightningChildLeft)) {
+				boxes[i].position.x += 64;
+				lightningChildLeft.isActive = 0;
+			}
+
+		}
+		else if (lightningChildRight.isActive)
+		{
+			if (checkCollisionWallRight(boxes[i], lightningChildRight)) {
+				boxes[i].position.x += 64;
+				lightningChildRight.isActive = 0;
+			}
+			else if (checkCollisionWallRight(boxes[i], lightningChildRight)) {
+				boxes[i].position.x -= 64;
+				lightningChildRight.isActive = 0;
+			}
+		}
+
+		//this whole thing need a rework asap, nothig works
 
 	}
 
