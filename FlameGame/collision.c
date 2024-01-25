@@ -113,6 +113,23 @@ int array_checkCollisionGroundTeleport(GameObject entity, GameObject* ground, in
 	return -1;
 }
 
+int array_checkCollisionGroundBoxes(GameObject entity, GameObject* ground, int nObjects) {
+
+	for (int i = 0; i < nObjects; i++) {
+
+		if (entity.position.x + entity.width - 1.0 >= ground[i].position.x &&
+			entity.position.x + 1.0<= ground[i].position.x + ground[i].width &&
+			entity.position.y + entity.height >= ground[i].position.y &&
+			entity.position.y + entity.height <= ground[i].position.y + ground[i].height - 1.0)
+		{
+			return i;
+		}
+
+	}
+
+	return -1;
+}
+
 int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObjects) {
 
 	for (int i = 0; i < nObjects; i++) {

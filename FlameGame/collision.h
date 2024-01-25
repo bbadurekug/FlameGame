@@ -18,6 +18,8 @@ int checkOutOfBounds(GameObject entity);
 
 int array_checkCollisionGround(GameObject entity, GameObject* ground, int nObjects);
 
+int array_checkCollisionGroundBoxes(GameObject entity, GameObject* ground, int nObjects);
+
 int array_checkCollisionCeiling(GameObject entity, GameObject* ground, int nObjects);
 
 int array_checkCollisionWallLeft(GameObject entity, GameObject* ground, int nObjects);

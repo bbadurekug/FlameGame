@@ -129,24 +129,28 @@ void update() {
 
 	for (int i = 0; i < nBoxes; i++) {
 
-		if (array_checkCollisionGround(boxes[i], platforms, nPlatforms) != -1) {
-			boxes[i].position.y = platforms[array_checkCollisionGround(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
+		//printf("%d\n", array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms));
+
+		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
+			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
 			boxes[i].velocity.vertical = 0;		
 		}
-		else if (array_checkCollisionGround(boxes[i], boxes, nBoxes) != -1) {
-			boxes[i].position.y = boxes[array_checkCollisionGround(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
+		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
+			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
 			boxes[i].velocity.vertical = 0;
 		}
 		else
 		{
+			//printf("not touching\n");
+			boxes[i].velocity.horizontal = 0;
 			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
 			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
 		}
 
-		//printf("box:%d pos:%f vel:%f \n", i, boxes[i].position.x, boxes[i].velocity.vertical);
+		printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
 
-		if(!boxes[i].grounded)
-			boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
+		
+		boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
@@ -160,72 +164,60 @@ void update() {
 		//ceiling collision is a bit out of place, blocks player when it shouldnt
 		//for example when the player is one block to the side and one block below the box, player gets blocked
 
+		
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{	
+			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			if(boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
-				boxes[i].position.x = (int)boxes[i].position.x - 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{
+			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
-				boxes[i].position.x = (int)boxes[i].position.x + 1;
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{	
+			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			//if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
-				//boxes[i].position.x = (int)boxes[i].position.x - 1;
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
-			boxes[i].grounded = 1;
-			//if (boxes[i].velocity.horizontal == 0 && boxes[i].frame == 0)
-				//boxes[i].position.x = (int)boxes[i].position.x + 1;
-		}
-		else if (((checkCollisionWallLeft(player, boxes[i]) && player.flip == 0) ||
-				  (checkCollisionWallRight(player, boxes[i]) && player.flip == 1)) &&
-				   player.velocity.horizontal == 0)
-		{
 			boxes[i].velocity.horizontal = 0;
+			boxes[i].grounded = 1;
 		}
 		else if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
 			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
 		{
 			boxes[i].velocity.horizontal = player.velocity.horizontal;
 		}
-		else if(boxes[i].frame != 1)
-		{
+		else {
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 0;
 		}
 
+		//the frame variable is used differently here!
+		//it tells the program if the "pushing procedure" has started
 		if (lightningChildLeft.isActive)
-		{
-			if (checkCollisionWallLeft(boxes[i], lightningChildLeft)) {
-				boxes[i].position.x -= 64;
-				lightningChildLeft.isActive = 0;
+		{	
+			if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0) {
+				boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
 			}
-			else if (checkCollisionWallRight(boxes[i], lightningChildLeft)) {
-				boxes[i].position.x += 64;
-				lightningChildLeft.isActive = 0;
+			else if (checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0) {
+				boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
 			}
 
 		}
-		else if (lightningChildRight.isActive)
+		if (lightningChildRight.isActive)
 		{
-			if (checkCollisionWallRight(boxes[i], lightningChildRight)) {
-				boxes[i].position.x += 64;
-				lightningChildRight.isActive = 0;
+			if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0) {
+				boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
 			}
-			else if (checkCollisionWallRight(boxes[i], lightningChildRight)) {
-				boxes[i].position.x -= 64;
-				lightningChildRight.isActive = 0;
+			else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0) {
+				boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
 			}
 		}
 
-		//this whole thing need a rework asap, nothig works
+		//this whole thing need a rework asap, nothing works
 
 	}
 
