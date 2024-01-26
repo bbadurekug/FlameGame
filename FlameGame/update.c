@@ -131,26 +131,7 @@ void update() {
 
 		//printf("%d\n", array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms));
 
-		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
-			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;		
-		}
-		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
-			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;
-		}
-		else
-		{
-			//printf("not touching\n");
-			boxes[i].velocity.horizontal = 0;
-			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
-			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
-		}
-
-		printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
-
-		
-		boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
+		//printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
@@ -163,6 +144,8 @@ void update() {
 
 		//ceiling collision is a bit out of place, blocks player when it shouldnt
 		//for example when the player is one block to the side and one block below the box, player gets blocked
+
+		
 
 		
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
@@ -190,15 +173,8 @@ void update() {
 		{
 			boxes[i].velocity.horizontal = player.velocity.horizontal;
 		}
-		else {
-			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 0;
-		}
-
-		//the frame variable is used differently here!
-		//it tells the program if the "pushing procedure" has started
-		if (lightningChildLeft.isActive)
-		{	
+		else if (lightningChildLeft.isActive)
+		{
 			if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0) {
 				boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
 			}
@@ -207,7 +183,7 @@ void update() {
 			}
 
 		}
-		if (lightningChildRight.isActive)
+		else if (lightningChildRight.isActive)
 		{
 			if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0) {
 				boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
@@ -216,8 +192,28 @@ void update() {
 				boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
 			}
 		}
+		else {
+			boxes[i].velocity.horizontal = 0;
+			boxes[i].grounded = 0;
+		}
 
-		//this whole thing need a rework asap, nothing works
+		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
+			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
+		}
+		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
+			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
+		}
+		else
+		{
+			printf("not touching\n");
+			boxes[i].velocity.horizontal = 0;
+			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
+			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
+		}
+
+		boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
 
 	}
 
