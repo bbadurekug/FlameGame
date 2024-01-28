@@ -145,56 +145,53 @@ void update() {
 		//ceiling collision is a bit out of place, blocks player when it shouldnt
 		//for example when the player is one block to the side and one block below the box, player gets blocked
 
-		
+		if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
+			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
+		{
+			boxes[i].velocity.horizontal = player.velocity.horizontal;
+		}
+		else if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
+			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
+		}
+		else if (checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
+			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
+		}
+		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
+			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
+		}
+		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
+			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
+		}
+		else {
+			boxes[i].velocity.horizontal = 0;
+			boxes[i].grounded = 0;
+		}
 
-		
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
-		{	
+		{
+			boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
+			printf("%d wall touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
+		{	
+			boxes[i].position.x = platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].position.x + platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].width;
+			boxes[i].velocity.horizontal = 0;
+			boxes[i].grounded = 1;
+			printf("%d wall touch2\n", i);
+		}
+		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-		}
-		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
-		{	
-			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 1;
+			printf("%d box touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-		}
-		else if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
-			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
-		{
-			boxes[i].velocity.horizontal = player.velocity.horizontal;
-		}
-		else if (lightningChildLeft.isActive)
-		{
-			if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0) {
-				boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
-			}
-			else if (checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0) {
-				boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
-			}
-
-		}
-		else if (lightningChildRight.isActive)
-		{
-			if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0) {
-				boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
-			}
-			else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0) {
-				boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
-			}
-		}
-		else {
-			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 0;
+			printf("%d box touch2\n", i);
 		}
 
 		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
@@ -207,7 +204,7 @@ void update() {
 		}
 		else
 		{
-			printf("not touching\n");
+			//printf("not touching\n");
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
 			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;

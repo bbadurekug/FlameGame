@@ -12,7 +12,7 @@
 #define BRICK_HEIGHT	64
 #define	BRICK_WIDTH		64
 
-#define LIGHTNING_PUSH_TIME		0.064
+#define LIGHTNING_PUSH_TIME		0.5
 #define FIREBALL_DECAY_TIME		1.5
 
 #define PLAYER_WALK_ANIMATION_TIME	0.395	//bops head to music, maybe make it imnprove later, so always snaps on beat
