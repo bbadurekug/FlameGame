@@ -151,16 +151,16 @@ void update() {
 			boxes[i].velocity.horizontal = player.velocity.horizontal;
 		}
 		else if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
-			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
+			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal; //change this so there is a target position array
 		}
 		else if (checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
-			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal;
+			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal; //change this so there is a target position array
 		}
 		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
-			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
+			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal; //change this so there is a target position array
 		}
 		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
-			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal;
+			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal; //change this so there is a target position array
 		}
 		else {
 			boxes[i].velocity.horizontal = 0;
