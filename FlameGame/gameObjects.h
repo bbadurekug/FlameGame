@@ -87,6 +87,7 @@ int nPlatforms;
 GameObject *boxes;
 SDL_Texture* boxTexture;
 int nBoxes;
+float* targetPosBox;
 
 GameObject goal;
 GameObject doorKey;

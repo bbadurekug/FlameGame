@@ -131,16 +131,9 @@ void update() {
 
 		//printf("%d\n", array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms));
 
-		//printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
+		printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
 
 		//printf("%f\n", boxes[i].velocity.vertical);
-
-		//this box logic need a rework
-		//current issues: some boxes seem to clip into walls, and are overall not very consistent with the spacing between walls
-		//there might exist a solution using modulo 64, so the boxes are always on grid after interacting with a wall, box or lightning
-		//or maybe just a simple position setting might do the work, this system does not
-		//possbile fix, make it so the box moves exactly 64 pixels, when touched by the lightning, so its consistent
-		//the current time system is not good enough
 
 		//ceiling collision is a bit out of place, blocks player when it shouldnt
 		//for example when the player is one block to the side and one block below the box, player gets blocked
@@ -150,17 +143,44 @@ void update() {
 		{
 			boxes[i].velocity.horizontal = player.velocity.horizontal;
 		}
-		else if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
-			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal; //change this so there is a target position array
+		else if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive ||
+				 checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
+			
+			printf("light hit %d\n", boxes[i].isActive);
+
+			//some improvements have been made, it still does not work as intended
+			//probably need a flag of some sort, that would tell the game, if the pushing process has finished, its really close to working
+
+			if (boxes[i].position.x > targetPosBox[i]) {
+
+				boxes[i].velocity.horizontal = -500;
+
+			}
+			else if (boxes[i].position.x <= targetPosBox[i]) {
+
+				targetPosBox[i] = boxes[i].position.x - 64.0;
+				//lightningChildLeft.isActive = 0;
+
+			}
+
 		}
-		else if (checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
-			boxes[i].velocity.horizontal = lightningChildLeft.velocity.horizontal; //change this so there is a target position array
-		}
-		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
-			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal; //change this so there is a target position array
-		}
-		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
-			boxes[i].velocity.horizontal = lightningChildRight.velocity.horizontal; //change this so there is a target position array
+		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive ||
+				 checkCollisionWallLeft(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
+			
+			printf("light hit %d\n", boxes[i].isActive);
+
+			if (boxes[i].position.x < targetPosBox[i]) {
+
+				boxes[i].velocity.horizontal = 500;
+
+			}
+			else if (boxes[i].position.x >= targetPosBox[i]) {
+
+				targetPosBox[i] = boxes[i].position.x + 64.0;
+				//lightningChildRight.isActive = 0;
+
+			}
+
 		}
 		else {
 			boxes[i].velocity.horizontal = 0;

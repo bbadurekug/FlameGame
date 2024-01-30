@@ -16,7 +16,7 @@ Mix_Chunk* negativeSound = NULL;
 Mix_Chunk* menuMoveSound = NULL;
 
 int gameRunning = FALSE;
-int levelID = 4;
+int levelID = 1;
 extern enum GameState gameState;
 
 int initializeWindow() {

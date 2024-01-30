@@ -64,6 +64,7 @@ void readLevelData(int levelID) {
 
 	sscanf_s(levelData, "%d", &nBoxes);
 
+	targetPosBox = malloc(sizeof(float) * nBoxes);
 	boxes = malloc(sizeof(GameObject) * nBoxes);
 
 	for (int i = 0; i < nBoxes; i++) {
@@ -80,6 +81,8 @@ void readLevelData(int levelID) {
 		if (boxes[i].frame == 1)
 			boxes[i].grounded = 1;
 
+		targetPosBox[i] = boxes[i].position.x;
+
 	}
 
 	fclose(levelFile);
@@ -89,6 +92,7 @@ void readLevelData(int levelID) {
 void freeMemory() {
 
 	free(platforms);
+	free(targetPosBox);
 	free(boxes);
 }
 
