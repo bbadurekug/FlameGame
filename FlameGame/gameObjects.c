@@ -77,6 +77,7 @@ void readLevelData(int levelID) {
 
 		boxes[i].velocity.horizontal = 0;
 		boxes[i].velocity.vertical = 0;
+		boxes[i].isActive = 0;
 
 		if (boxes[i].frame == 1)
 			boxes[i].grounded = 1;

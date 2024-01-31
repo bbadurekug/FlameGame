@@ -133,56 +133,80 @@ void update() {
 
 		printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
 
+		//boxes[i].isActive = 0;
+
+		//printf("box:%d active:%d \n", i, boxes[i].isActive);
+
+
 		//printf("%f\n", boxes[i].velocity.vertical);
 
 		//ceiling collision is a bit out of place, blocks player when it shouldnt
 		//for example when the player is one block to the side and one block below the box, player gets blocked
+
+		if (boxes[i].frame == 0) {
+			if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && lightningChildLeft.isActive ||
+				checkCollisionWallRight(boxes[i], lightningChildLeft) && lightningChildLeft.isActive) {
+
+				printf("light hit %d\n", boxes[i].isActive);
+
+				//important note! 
+				//the isActive variable is used to determine if the lightning push has started!
+
+				if (boxes[i].position.x > targetPosBox[i]) {
+
+					boxes[i].isActive = 1;
+
+				}
+				else if (boxes[i].position.x <= targetPosBox[i] && !boxes[i].isActive) {
+
+					boxes[i].isActive = 1;
+
+					targetPosBox[i] = boxes[i].position.x - 64.0;
+					lightningChildLeftActiveTime = -0.1;
+
+				}
+
+			}
+			else if (checkCollisionWallRight(boxes[i], lightningChildRight) && lightningChildRight.isActive ||
+					 checkCollisionWallLeft(boxes[i], lightningChildRight) && lightningChildRight.isActive) {
+
+				printf("light hit %d\n", boxes[i].isActive);
+
+				if (boxes[i].position.x < targetPosBox[i]) {
+
+					boxes[i].isActive = 1;
+
+				}
+				else if (boxes[i].position.x >= targetPosBox[i] && !boxes[i].isActive) {
+
+					boxes[i].isActive = 1;
+
+					targetPosBox[i] = boxes[i].position.x + 64.0;
+					lightningChildRightActiveTime = -0.1;
+
+				}
+
+			}
+
+			if (boxes[i].isActive && boxes[i].position.x < targetPosBox[i]) {
+				//boxes[i].position.x = (int)boxes[i].position.x + 1;
+				boxes[i].velocity.horizontal = 500;
+			}
+			else if (boxes[i].isActive && boxes[i].position.x > targetPosBox[i]) {
+				//boxes[i].position.x = (int)boxes[i].position.x;
+				boxes[i].velocity.horizontal = -500;
+			}
+			else if (boxes[i].isActive && boxes[i].position.x == targetPosBox[i]) {
+				boxes[i].isActive = 0;
+			}
+		}
 
 		if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
 			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
 		{
 			boxes[i].velocity.horizontal = player.velocity.horizontal;
 		}
-		else if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive ||
-				 checkCollisionWallRight(boxes[i], lightningChildLeft) && boxes[i].velocity.horizontal == 0 && lightningChildLeft.isActive) {
-			
-			printf("light hit %d\n", boxes[i].isActive);
-
-			//some improvements have been made, it still does not work as intended
-			//probably need a flag of some sort, that would tell the game, if the pushing process has finished, its really close to working
-
-			if (boxes[i].position.x > targetPosBox[i]) {
-
-				boxes[i].velocity.horizontal = -500;
-
-			}
-			else if (boxes[i].position.x <= targetPosBox[i]) {
-
-				targetPosBox[i] = boxes[i].position.x - 64.0;
-				//lightningChildLeft.isActive = 0;
-
-			}
-
-		}
-		else if (checkCollisionWallRight(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive ||
-				 checkCollisionWallLeft(boxes[i], lightningChildRight) && boxes[i].velocity.horizontal == 0 && lightningChildRight.isActive) {
-			
-			printf("light hit %d\n", boxes[i].isActive);
-
-			if (boxes[i].position.x < targetPosBox[i]) {
-
-				boxes[i].velocity.horizontal = 500;
-
-			}
-			else if (boxes[i].position.x >= targetPosBox[i]) {
-
-				targetPosBox[i] = boxes[i].position.x + 64.0;
-				//lightningChildRight.isActive = 0;
-
-			}
-
-		}
-		else {
+		else if(!boxes[i].isActive){
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 0;
 		}
@@ -190,6 +214,7 @@ void update() {
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{
 			boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
+			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
 			printf("%d wall touch1\n", i);
@@ -197,18 +222,21 @@ void update() {
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{	
 			boxes[i].position.x = platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].position.x + platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].width;
+			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
 			printf("%d wall touch2\n", i);
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{
+			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
 			printf("%d box touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
+			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
 			printf("%d box touch2\n", i);
@@ -226,12 +254,20 @@ void update() {
 		{
 			//printf("not touching\n");
 			boxes[i].velocity.horizontal = 0;
+			boxes[i].grounded = 1;
 			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
 			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
 		}
 
-		boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
+		if (boxes[i].frame == 0) {
+			boxes[i].position.x += boxes[i].velocity.horizontal * deltaTime;
+		}
+		else {
+			boxes[i].grounded = 1;
+		}
 
+		if (boxes[i].position.x + 1 > targetPosBox[i] && boxes[i].position.x - 1 < targetPosBox[i])
+			boxes[i].position.x = targetPosBox[i];
 	}
 
 	if (fireball.isActive)
