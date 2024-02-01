@@ -81,6 +81,8 @@ void readLevelData(int levelID) {
 
 		if (boxes[i].frame == 1)
 			boxes[i].grounded = 1;
+		else
+			boxes[i].grounded = 0;
 
 		targetPosBox[i] = boxes[i].position.x;
 

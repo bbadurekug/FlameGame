@@ -99,6 +99,7 @@ TextBox tExit;
 TextBox tDead;
 TextBox tTryAgain;
 
+TextBox tVersion;
 TextBox tTitle;
 TextBox tPlay;
 TextBox tQuit;

@@ -431,6 +431,7 @@ void titleRender() {
 
 	SDL_RenderCopy(renderer, tSelect.texture, NULL, &tSelectRect);
 
+	renderTextBox(renderer, tVersion);
 	renderTextBox(renderer, tTitle);
 	renderTextBox(renderer, tPlay);
 	renderTextBox(renderer, tQuit);

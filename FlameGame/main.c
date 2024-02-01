@@ -3,6 +3,7 @@
 #include"input.h"
 #include"render.h"
 #include"manager.h"
+#include<stdio.h>
 
 extern int gameRunning;
 extern int gamePaused;

@@ -4,7 +4,7 @@
 #define FALSE	0
 #define TRUE	1
 
-#define FPS		60.0
+#define FPS		1000.0
 #define FRAME_TARGET_TIME  (1000.0 / FPS)
 
 #define STANDARD_GRAVITY	1000 //:)

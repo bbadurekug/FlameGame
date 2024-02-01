@@ -13,9 +13,11 @@ char fireballCollisionIndex = 0;
 
 void deltaTimeCalculation() {
 
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), lastFrameTime + FRAME_TARGET_TIME));
 	//deltaTime cannot be deleted, makes game run smoothly
 	deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0;
 	lastFrameTime = SDL_GetTicks();
+	//printf("%d\n", lastFrameTime);
 
 }
 
@@ -131,23 +133,54 @@ void update() {
 
 		//printf("%d\n", array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms));
 
-		printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
+		//printf("box:%d posx:%f poy:%f velx:%f vely:%f \n", i, boxes[i].position.x, boxes[i].position.y, boxes[i].velocity.horizontal, boxes[i].velocity.vertical);
 
 		//boxes[i].isActive = 0;
 
-		//printf("box:%d active:%d \n", i, boxes[i].isActive);
-
+		//printf("box:%d grounded:%d \n", i, boxes[i].grounded);
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
 		//ceiling collision is a bit out of place, blocks player when it shouldnt
 		//for example when the player is one block to the side and one block below the box, player gets blocked
 
+		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
+
+			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
+		}
+		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
+	
+			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
+		}
+		else
+		{
+			//printf("not touching\n");
+			boxes[i].velocity.horizontal = 0;
+			//boxes[i].grounded = 1;
+			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
+			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
+		}
+
+		if (boxes[i].isActive == 0) {
+			if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
+				(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
+			{
+				//printf("push\n");
+				boxes[i].velocity.horizontal = player.velocity.horizontal;
+			}
+			else {
+				//printf("bruh\n");
+				boxes[i].velocity.horizontal = 0;
+			}
+		}
+
 		if (boxes[i].frame == 0) {
 			if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && lightningChildLeft.isActive ||
 				checkCollisionWallRight(boxes[i], lightningChildLeft) && lightningChildLeft.isActive) {
 
-				printf("light hit %d\n", boxes[i].isActive);
+				//printf("light hit %d\n", boxes[i].isActive);
 
 				//important note! 
 				//the isActive variable is used to determine if the lightning push has started!
@@ -170,7 +203,7 @@ void update() {
 			else if (checkCollisionWallRight(boxes[i], lightningChildRight) && lightningChildRight.isActive ||
 					 checkCollisionWallLeft(boxes[i], lightningChildRight) && lightningChildRight.isActive) {
 
-				printf("light hit %d\n", boxes[i].isActive);
+				//printf("light hit %d\n", boxes[i].isActive);
 
 				if (boxes[i].position.x < targetPosBox[i]) {
 
@@ -197,18 +230,13 @@ void update() {
 				boxes[i].velocity.horizontal = -500;
 			}
 			else if (boxes[i].isActive && boxes[i].position.x == targetPosBox[i]) {
+				boxes[i].velocity.horizontal = 0;
 				boxes[i].isActive = 0;
 			}
 		}
-
-		if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
-			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
-		{
-			boxes[i].velocity.horizontal = player.velocity.horizontal;
-		}
-		else if(!boxes[i].isActive){
+		else {
+			boxes[i].grounded = 1;
 			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 0;
 		}
 
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
@@ -217,7 +245,7 @@ void update() {
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			printf("%d wall touch1\n", i);
+			//printf("%d wall touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{	
@@ -225,38 +253,24 @@ void update() {
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			printf("%d wall touch2\n", i);
+			//printf("%d wall touch2\n", i);
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
 		{
+			//boxes[i].position.x = boxes[array_checkCollisionWallLeft(boxes[i], boxes, nBoxes)].position.x - 64;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 1;
-			printf("%d box touch1\n", i);
+			//printf("%d box touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
+			//boxes[i].position.x = boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].position.x + boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].width;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 1;
-			printf("%d box touch2\n", i);
+			//printf("%d box touch2\n", i);
 		}
-
-		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
-			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;
-		}
-		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
-			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;
-		}
-		else
-		{
-			//printf("not touching\n");
-			boxes[i].velocity.horizontal = 0;
-			boxes[i].grounded = 1;
-			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
-			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
+		else {
+			//boxes[i].grounded = 0;
 		}
 
 		if (boxes[i].frame == 0) {
@@ -266,7 +280,7 @@ void update() {
 			boxes[i].grounded = 1;
 		}
 
-		if (boxes[i].position.x + 1 > targetPosBox[i] && boxes[i].position.x - 1 < targetPosBox[i])
+		if (boxes[i].position.x + 1 > targetPosBox[i] && boxes[i].position.x - 1 < targetPosBox[i] && boxes[i].isActive)
 			boxes[i].position.x = targetPosBox[i];
 	}
 
@@ -277,6 +291,7 @@ void update() {
 	if (array_checkCollisionWallRight(fireball, boxes, nBoxes) != -1 && !fireball.grounded)
 	{
 		boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].frame = 0;
+		boxes[array_checkCollisionWallRight(fireball, boxes, nBoxes)].grounded = 0;
 		fireballCollisionIndex = array_checkCollisionWallRight(fireball, boxes, nBoxes);
 		fireball.position.x = boxes[fireballCollisionIndex].position.x + fireball.width;
 		fireball.position.y = boxes[fireballCollisionIndex].position.y;
@@ -288,6 +303,7 @@ void update() {
 	else if (array_checkCollisionWallLeft(fireball, boxes, nBoxes) != -1 && !fireball.grounded)
 	{
 		boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].frame = 0;
+		boxes[array_checkCollisionWallLeft(fireball, boxes, nBoxes)].grounded = 0;
 		fireballCollisionIndex = array_checkCollisionWallLeft(fireball, boxes, nBoxes);
 		fireball.position.x = boxes[fireballCollisionIndex].position.x - fireball.width;
 		fireball.position.y = boxes[fireballCollisionIndex].position.y;

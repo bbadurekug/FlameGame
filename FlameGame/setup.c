@@ -41,6 +41,7 @@ int initializeWindow() {
 		0
 	);
 
+	return 1;
 }
 
 SDL_Texture* loadTexture(const char* directory) {
@@ -114,6 +115,12 @@ void setup() {
 	tTryAgain.above = NULL;
 	tTryAgain.below = NULL;
 	tTryAgain.logic = tTryAgainLogic;
+
+	tVersion.textTexture = createTextTexture(font, "Version: 0.010001 Pre-Pre-Alpha", (SDL_Color) { 255, 255, 255, 255 });
+	tVersion.width = 200;
+	tVersion.height = 10;
+	tVersion.position.x = 0;
+	tVersion.position.y = WINDOW_HEIGHT - tVersion.height;
 
 	tTitle.textTexture = createTextTexture(font, "Game Name Here", (SDL_Color) { 255, 255, 255, 255 });
 	tTitle.width = 500;
