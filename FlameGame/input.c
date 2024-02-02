@@ -113,7 +113,7 @@ void input() {
 			lightning.isActive = 1;
 			lightningActiveTime = 0.5;
 			lightning.position.y = -128;
-			lightning.velocity.vertical = 10000;
+			lightning.velocity.vertical = 5000;
 		}
 
 		if (event.key.keysym.sym == SDLK_k) {

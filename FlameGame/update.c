@@ -141,28 +141,6 @@ void update() {
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
-		//ceiling collision is a bit out of place, blocks player when it shouldnt
-		//for example when the player is one block to the side and one block below the box, player gets blocked
-
-		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
-
-			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;
-		}
-		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
-	
-			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
-			boxes[i].velocity.vertical = 0;
-		}
-		else
-		{
-			//printf("not touching\n");
-			boxes[i].velocity.horizontal = 0;
-			//boxes[i].grounded = 1;
-			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
-			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
-		}
-
 		if (boxes[i].isActive == 0) {
 			if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
 				(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
@@ -241,7 +219,7 @@ void update() {
 
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{
-			boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
+			//boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
@@ -249,28 +227,30 @@ void update() {
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{	
-			boxes[i].position.x = platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].position.x + platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].width;
+			//boxes[i].position.x = platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].position.x + platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].width;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
 			//printf("%d wall touch2\n", i);
 		}
-		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1)
+		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1 )
 		{
 			//boxes[i].position.x = boxes[array_checkCollisionWallLeft(boxes[i], boxes, nBoxes)].position.x - 64;
+			boxes[i].grounded = 1;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
-			//printf("%d box touch1\n", i);
+			printf("%d box touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
 			//boxes[i].position.x = boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].position.x + boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].width;
+			boxes[i].grounded = 1;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
-			//printf("%d box touch2\n", i);
+			printf("%d box touch2\n", i);
 		}
 		else {
-			//boxes[i].grounded = 0;
+			boxes[i].grounded = 0;
 		}
 
 		if (boxes[i].frame == 0) {
@@ -282,6 +262,27 @@ void update() {
 
 		if (boxes[i].position.x + 1 > targetPosBox[i] && boxes[i].position.x - 1 < targetPosBox[i] && boxes[i].isActive)
 			boxes[i].position.x = targetPosBox[i];
+
+		if (array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms) != -1) {
+
+			//mozliwy problem
+			boxes[i].position.y = platforms[array_checkCollisionGroundBoxes(boxes[i], platforms, nPlatforms)].position.y - boxes[i].height;
+			boxes[i].velocity.vertical = 0;
+		}
+		else if (array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes) != -1) {
+
+			boxes[i].velocity.vertical = 0;
+			boxes[i].position.y = boxes[array_checkCollisionGroundBoxes(boxes[i], boxes, nBoxes)].position.y - boxes[i].height;
+			
+		}
+		else
+		{
+			//printf("not touching\n");
+			boxes[i].velocity.horizontal = 0;
+			//boxes[i].grounded = 1;
+			boxes[i].position.y += boxes[i].velocity.vertical * deltaTime;
+			boxes[i].velocity.vertical += STANDARD_GRAVITY * deltaTime;
+		}
 	}
 
 	if (fireball.isActive)
