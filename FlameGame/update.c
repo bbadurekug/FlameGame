@@ -141,19 +141,6 @@ void update() {
 
 		//printf("%f\n", boxes[i].velocity.vertical);
 
-		if (boxes[i].isActive == 0) {
-			if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
-				(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
-			{
-				//printf("push\n");
-				boxes[i].velocity.horizontal = player.velocity.horizontal;
-			}
-			else {
-				//printf("bruh\n");
-				boxes[i].velocity.horizontal = 0;
-			}
-		}
-
 		if (boxes[i].frame == 0) {
 			if (checkCollisionWallLeft(boxes[i], lightningChildLeft) && lightningChildLeft.isActive ||
 				checkCollisionWallRight(boxes[i], lightningChildLeft) && lightningChildLeft.isActive) {
@@ -217,25 +204,48 @@ void update() {
 			boxes[i].velocity.horizontal = 0;
 		}
 
+
+		if ((checkCollisionWallLeft(boxes[i], player) && player.velocity.horizontal < 0) ||
+			(checkCollisionWallRight(boxes[i], player) && player.velocity.horizontal > 0))
+		{
+			//printf("push\n");
+			boxes[i].velocity.horizontal = player.velocity.horizontal;
+			//targetPosBox[i] = boxes[i].position.x;
+		}
+		else if (checkCollisionWallLeft(boxes[i], player) || (checkCollisionWallRight(boxes[i], player))) {
+
+			boxes[i].velocity.horizontal = 0;
+			boxes[i].isActive = 0;
+			targetPosBox[i] = boxes[i].position.x;
+
+		}
+		else {
+			//printf("bruh\n");
+			if(boxes[i].isActive == 0)
+			boxes[i].velocity.horizontal = 0;
+		}
+		
+
 		if (array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms) != -1)
 		{
-			//boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
+			boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
 			targetPosBox[i] = boxes[i].position.x;
-			boxes[i].velocity.horizontal = 0;
+			//boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			//printf("%d wall touch1\n", i);
+			printf("%d wall touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{	
-			//boxes[i].position.x = platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].position.x + platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].width;
+			boxes[i].position.x = platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].position.x + platforms[array_checkCollisionWallRight(boxes[i], platforms, nPlatforms)].width;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			//printf("%d wall touch2\n", i);
+			printf("%d wall touch2\n", i);
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1 )
 		{
-			//boxes[i].position.x = boxes[array_checkCollisionWallLeft(boxes[i], boxes, nBoxes)].position.x - 64;
+			if(boxes[i].velocity.vertical == 0 && boxes[array_checkCollisionWallLeft(boxes[i], boxes, nBoxes)].velocity.vertical == 0)
+				boxes[i].position.x = boxes[array_checkCollisionWallLeft(boxes[i], boxes, nBoxes)].position.x - 64;
 			boxes[i].grounded = 1;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
@@ -243,7 +253,8 @@ void update() {
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
-			//boxes[i].position.x = boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].position.x + boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].width;
+			if (boxes[i].velocity.vertical == 0 && boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].velocity.vertical == 0)
+				boxes[i].position.x = boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].position.x + boxes[array_checkCollisionWallRight(boxes[i], boxes, nBoxes)].width;
 			boxes[i].grounded = 1;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
