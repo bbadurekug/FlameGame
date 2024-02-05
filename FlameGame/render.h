@@ -6,4 +6,6 @@ void render();
 
 void titleRender();
 
+void editorRender();
+
 #endif // !RENDER_H

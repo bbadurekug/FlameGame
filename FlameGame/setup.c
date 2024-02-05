@@ -122,7 +122,7 @@ void setup() {
 	tVersion.position.x = 0;
 	tVersion.position.y = WINDOW_HEIGHT - tVersion.height;
 
-	tTitle.textTexture = createTextTexture(font, "Game Name Here", (SDL_Color) { 255, 255, 255, 255 });
+	tTitle.textTexture = createTextTexture(font, "Balldur´s Gate", (SDL_Color) { 255, 255, 255, 255 });
 	tTitle.width = 500;
 	tTitle.height = 96;
 	tTitle.position.x = (WINDOW_WIDTH / 2) - (tTitle.width) / 2;
@@ -133,17 +133,27 @@ void setup() {
 	tPlay.height = 64;
 	tPlay.position.x = (WINDOW_WIDTH / 2) - (tPlay.width) / 2;
 	tPlay.position.y = (WINDOW_HEIGHT / 2) - (tPlay.height) / 2;
-	tPlay.below = &tQuit;
+	tPlay.below = &tEditor;
 	tPlay.above = NULL;
 	tPlay.logic = tPlayLogic;
+
+	tEditor.textTexture = createTextTexture(font, "Editor", (SDL_Color) { 255, 255, 255, 255 });
+	tEditor.width = 250;
+	tEditor.height = 64;
+	tEditor.position.x = (WINDOW_WIDTH / 2) - (tPlay.width) / 2;
+	tEditor.position.y = tPlay.position.y + 128;
+	tEditor.below = &tQuit;
+	tEditor.above = &tPlay;
+	tEditor.logic = tEditorLogic;
+
 
 	tQuit.textTexture = createTextTexture(font, "Quit", (SDL_Color) { 255, 255, 255, 255 });
 	tQuit.width = 250;
 	tQuit.height = 64;
 	tQuit.position.x = (WINDOW_WIDTH / 2) - (tQuit.width) / 2;
-	tQuit.position.y = (WINDOW_HEIGHT - (WINDOW_HEIGHT / 3)) - (tExit.height) / 2;
+	tQuit.position.y = tEditor.position.y + 128;
 	tQuit.below = NULL;
-	tQuit.above = &tPlay;
+	tQuit.above = &tEditor;
 	tQuit.logic = tQuitLogic;
 
 	tSelect.position.x = tPlay.position.x - tSelect.width - 20;
@@ -172,7 +182,14 @@ void setup() {
 	tTryAgain.backgroundTexture = tPaused.backgroundTexture;
 	tTitle.backgroundTexture = tPaused.backgroundTexture;
 	tPlay.backgroundTexture = tPaused.backgroundTexture;
+	tEditor.backgroundTexture = tPaused.backgroundTexture;
 	tQuit.backgroundTexture = tPaused.backgroundTexture;
+
+	editorCursor.position.x = 0;
+	editorCursor.position.y = 0;
+	editorCursor.width = 64;
+	editorCursor.height = 64;
+	editorCursor.texture = loadTexture("./Textures/deleteCursor.png");
 
 	goal.width = 64;
 	goal.height = 64;
@@ -224,6 +241,17 @@ void setup() {
 	blizzard.isActive = 0;
 	blizzard.texture = loadTexture("./Textures/blizzardTest.png");
 	blizzardActiveTime = 0;
+
+
+	//this is where you can add textures to place in the level editor
+	cursorTextureArray[0] = editorCursor.texture;
+	cursorTextureArray[1] = platformTexture;
+	cursorTextureArray[2] = boxTexture;
+	cursorTextureArray[3] = goal.texture;
+	cursorTextureArray[4] = doorKey.texture;
+
+	cursorTextureIndex = 0;
+
 }
 
 void destroyWindow() {

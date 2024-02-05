@@ -8,7 +8,8 @@ enum GameState {
 	GAMEPLAY = 1,
 	PAUSESCREEN = 2,
 	LOADSCREEN = 3,
-	DEATHSTATE = 4
+	DEATHSTATE = 4,
+	LEVELEDITOR = 5
 
 };
 

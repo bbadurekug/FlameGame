@@ -434,7 +434,81 @@ void titleRender() {
 	renderTextBox(renderer, tVersion);
 	renderTextBox(renderer, tTitle);
 	renderTextBox(renderer, tPlay);
+	renderTextBox(renderer, tEditor);
 	renderTextBox(renderer, tQuit);
+
+	SDL_RenderPresent(renderer);
+
+}
+
+void editorRender() {
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderClear(renderer);
+
+	for (int j = 0; j < (WINDOW_WIDTH / BRICK_WIDTH); j++) {
+
+		for (int k = 0; k < (WINDOW_HEIGHT / BRICK_HEIGHT); k++) {
+
+			SDL_Rect objectsRect = {
+
+				0 + j * BRICK_WIDTH,
+				0 + k * BRICK_HEIGHT,
+				BRICK_WIDTH,
+				BRICK_HEIGHT
+
+			};
+
+			SDL_RenderCopy(renderer, backgroundTexture, NULL, &objectsRect);
+		}
+	}
+
+	renderMultipleObjectsTexture(renderer, platforms, nPlatforms, platformTexture);
+
+	SDL_Rect goalRect = {
+		(int)goal.position.x,
+		(int)goal.position.y,
+		(int)goal.width,
+		(int)goal.height
+	};
+
+	SDL_Rect goalFrameRect = {
+		(goal.width / 2.0) * goal.frame,
+		0,
+		goal.width / 2.0,
+		goal.height / 2.0
+	};
+
+	SDL_RenderCopy(renderer, goal.texture, &goalFrameRect, &goalRect);
+
+	renderObjectsTextureFrame(renderer, boxes, nBoxes, boxTexture);
+
+	if (goal.frame == 0) {
+		SDL_Rect doorKeyRect = {
+			(int)doorKey.position.x,
+			(int)doorKey.position.y,
+			(int)doorKey.width,
+			(int)doorKey.height
+		};
+
+		SDL_RenderCopy(renderer, doorKey.texture, NULL, &doorKeyRect);
+	}
+
+	SDL_Rect editorCursorRect = {
+		(int)editorCursor.position.x,
+		(int)editorCursor.position.y,
+		(int)editorCursor.width,
+		(int)editorCursor.height
+	};
+
+	SDL_Rect editorCursorFrameRect = {
+		(editorCursor.width / 2.0) * editorCursor.frame,
+		0,
+		editorCursor.width / 2.0,
+		editorCursor.height / 2.0
+	};
+
+	SDL_RenderCopy(renderer, editorCursor.texture, &editorCursorFrameRect, &editorCursorRect);
 
 	SDL_RenderPresent(renderer);
 

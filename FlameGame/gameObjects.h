@@ -56,10 +56,15 @@ void tResumeLogic();
 void tTryAgainLogic();
 
 void tPlayLogic();
+void tEditorLogic();
 void tQuitLogic();
 
 GameObject player;
 float playerAnimationTime;
+
+GameObject editorCursor;
+SDL_Texture* cursorTextureArray[5];
+int cursorTextureIndex;
 
 GameObject teleport;
 
@@ -102,6 +107,7 @@ TextBox tTryAgain;
 TextBox tVersion;
 TextBox tTitle;
 TextBox tPlay;
+TextBox tEditor;
 TextBox tQuit;
 
 GameObject tSelect;

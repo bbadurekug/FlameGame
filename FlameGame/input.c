@@ -128,12 +128,14 @@ void input() {
 
 		if (event.key.keysym.sym == SDLK_LEFT) {
 
+			freeMemory();
 			readLevelData(--levelID);
 
 		}
 
 		if (event.key.keysym.sym == SDLK_RIGHT) {
 
+			freeMemory();
 			readLevelData(++levelID);
 
 		}
@@ -282,6 +284,100 @@ void titleInput() {
 			tCurrentSelect->logic();
 
 		}
+
+		break;
+	}
+
+}
+
+void editorInput() {
+
+	SDL_Event editorEvent;
+	SDL_PollEvent(&editorEvent);
+
+	switch (editorEvent.type) {
+
+	case SDL_QUIT:
+		gameRunning = FALSE;
+		break;
+	case SDL_KEYDOWN:
+
+		if (editorEvent.key.keysym.sym == SDLK_p)
+			gameRunning = FALSE;
+
+		if (editorEvent.key.keysym.sym == SDLK_ESCAPE) {
+
+			Mix_PlayChannel(-1, negativeSound, 0);
+			tCurrentSelect = &tPlay;
+			gameState = TITLESCREEN;
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_w) {
+
+			if(editorCursor.position.y >= 64)
+				editorCursor.position.y -= 64;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_a) {
+
+			if(editorCursor.position.x >= 64)
+				editorCursor.position.x -= 64;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_s) {
+
+			if(editorCursor.position.y < WINDOW_HEIGHT - 64)
+				editorCursor.position.y += 64;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_d) {
+
+			if (editorCursor.position.x < WINDOW_WIDTH - 64)
+				editorCursor.position.x += 64;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_LEFT) {
+
+			freeMemory();
+			readLevelData(--levelID);
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_RIGHT) {
+
+			freeMemory();
+			readLevelData(++levelID);
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_i) {
+
+			cursorTextureIndex = (cursorTextureIndex + 1) % 5;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_k) {
+
+			cursorTextureIndex = (cursorTextureIndex == 0)? cursorTextureIndex = 4: (cursorTextureIndex - 1) % 5;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_j) {
+
+			editorCursor.frame -= 1;
+
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_l) {
+
+			editorCursor.frame += 1;
+
+		}
+
 
 		break;
 	}

@@ -10,4 +10,6 @@ void deathInput();
 
 void titleInput();
 
+void editorInput();
+
 #endif // !INPUT_H

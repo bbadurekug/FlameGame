@@ -12,4 +12,6 @@ void deathUpdate();
 
 void titleUpdate();
 
+void editorUpdate();
+
 #endif // !UPDATE_H

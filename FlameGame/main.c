@@ -48,6 +48,12 @@ int main(int argc, char* args[]) {
 			deathInput();
 			render();
 			break;
+
+		case LEVELEDITOR:
+			editorUpdate();
+			editorInput();
+			editorRender();
+			break;
 		}
 
 	}

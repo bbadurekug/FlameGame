@@ -496,3 +496,9 @@ void loadScreenUpdate() {
 	//The levels load pretty fast and I dont think it would look good
 
 }
+
+void editorUpdate() {
+
+	editorCursor.texture = cursorTextureArray[cursorTextureIndex];
+
+}

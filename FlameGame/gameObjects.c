@@ -103,7 +103,8 @@ extern int gameRunning;
 
 void tExitLogic() {
 
-	gameRunning = FALSE;
+	gameState = TITLESCREEN;
+	tCurrentSelect = &tPlay;
 
 }
 
@@ -128,6 +129,13 @@ void tPlayLogic() {
 	readLevelData(levelID);
 	Mix_PlayMusic(backgroundMusic, -1);
 	gameState = GAMEPLAY;
+
+}
+
+void tEditorLogic() {
+
+	readLevelData(levelID);
+	gameState = LEVELEDITOR;
 
 }
 
