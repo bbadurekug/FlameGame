@@ -230,9 +230,9 @@ void update() {
 		{
 			boxes[i].position.x = platforms[array_checkCollisionWallLeft(boxes[i], platforms, nPlatforms)].position.x - 64;
 			targetPosBox[i] = boxes[i].position.x;
-			//boxes[i].velocity.horizontal = 0;
+			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			printf("%d wall touch1\n", i);
+			//printf("%d wall touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], platforms, nPlatforms) != -1)
 		{	
@@ -240,7 +240,7 @@ void update() {
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
 			boxes[i].grounded = 1;
-			printf("%d wall touch2\n", i);
+			//printf("%d wall touch2\n", i);
 		}
 		else if (array_checkCollisionWallLeft(boxes[i], boxes, nBoxes) != -1 )
 		{
@@ -249,7 +249,7 @@ void update() {
 			boxes[i].grounded = 1;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
-			printf("%d box touch1\n", i);
+			//printf("%d box touch1\n", i);
 		}
 		else if (array_checkCollisionWallRight(boxes[i], boxes, nBoxes) != -1)
 		{
@@ -258,7 +258,7 @@ void update() {
 			boxes[i].grounded = 1;
 			targetPosBox[i] = boxes[i].position.x;
 			boxes[i].velocity.horizontal = 0;
-			printf("%d box touch2\n", i);
+			//printf("%d box touch2\n", i);
 		}
 		else {
 			boxes[i].grounded = 0;
@@ -427,8 +427,8 @@ void update() {
 
 	if (array_checkCollisionTeleport(teleport, platforms, nPlatforms) == 1 ||
 		array_checkCollisionTeleport(teleport, boxes, nBoxes) == 1 ||
-		checkIsInsideObject(teleport, platforms, nPlatforms) == 1 ||
-		checkIsInsideObject(teleport, boxes, nBoxes) == 1 ||
+		checkIsInsideObject(teleport, platforms, nPlatforms) != -1 ||
+		checkIsInsideObject(teleport, boxes, nBoxes) != -1 ||
 		player.grounded == 0)
 	{
 		teleport.grounded = 0;
@@ -499,6 +499,7 @@ void loadScreenUpdate() {
 
 void editorUpdate() {
 
+	printf("%d\n", nBoxes);
 	editorCursor.texture = cursorTextureArray[cursorTextureIndex];
 
 }

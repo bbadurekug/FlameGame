@@ -494,6 +494,23 @@ void editorRender() {
 		SDL_RenderCopy(renderer, doorKey.texture, NULL, &doorKeyRect);
 	}
 
+	SDL_Rect playerRect = {
+		(int)player.position.x,
+		(int)player.position.y,
+		(int)player.width,
+		(int)player.height
+	};
+
+	SDL_Rect playerFrameRect = {
+		(player.width / 2.0) * player.frame,
+		0,
+		player.width / 2.0,
+		player.height / 2.0
+	};
+
+
+	SDL_RenderCopyEx(renderer, player.texture, &playerFrameRect, &playerRect, 0.0, NULL, SDL_FLIP_NONE);
+
 	SDL_Rect editorCursorRect = {
 		(int)editorCursor.position.x,
 		(int)editorCursor.position.y,

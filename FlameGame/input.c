@@ -5,6 +5,7 @@
 #include"setup.h"
 #include"constants.h"
 #include"manager.h"
+#include"collision.h"
 
 extern int gameRunning;
 extern int gamePaused;
@@ -356,12 +357,14 @@ void editorInput() {
 
 		if (editorEvent.key.keysym.sym == SDLK_i) {
 
+			editorCursor.frame = 0;
 			cursorTextureIndex = (cursorTextureIndex + 1) % 5;
 
 		}
 
 		if (editorEvent.key.keysym.sym == SDLK_k) {
-
+			
+			editorCursor.frame = 0;
 			cursorTextureIndex = (cursorTextureIndex == 0)? cursorTextureIndex = 4: (cursorTextureIndex - 1) % 5;
 
 		}
@@ -376,6 +379,92 @@ void editorInput() {
 
 			editorCursor.frame += 1;
 
+		}
+
+		if (editorEvent.key.keysym.sym == SDLK_RETURN) {
+
+			switch (cursorTextureIndex) {
+
+			case 0: //delete 
+				if (checkIsInsideObject(editorCursor, platforms, nPlatforms) != -1) {
+
+					for (int i = checkIsInsideObject(editorCursor, platforms, nPlatforms); i < (nPlatforms - 1); i++) {
+
+						platforms[i] = platforms[i + 1];
+
+					}
+
+					nPlatforms--;
+					GameObject* tmp = realloc(platforms, sizeof(GameObject) * nPlatforms);
+
+					if (tmp != NULL)
+						platforms = tmp;
+
+				}
+				else if (checkIsInsideObject(editorCursor, boxes, nBoxes) != -1) {
+
+					for (int i = checkIsInsideObject(editorCursor, boxes, nBoxes); i < (nBoxes - 1); i++) {
+
+						boxes[i] = boxes[i + 1];
+
+					}
+
+					nBoxes--;
+					GameObject* tmp = realloc(boxes, sizeof(GameObject) * nBoxes);
+
+					if (tmp != NULL)
+						boxes = tmp;
+
+				}
+				break;
+
+			case 1: //place platform
+
+				if (checkIsInsideObject(editorCursor, platforms, nPlatforms) == -1) {
+
+					//this breaks the game lol
+
+					/*nPlatforms++;
+					GameObject* tmp = realloc(platforms, sizeof(GameObject) * nPlatforms);
+
+					tmp[nPlatforms - 1] = (GameObject)
+					{ editorCursor.position,
+						64,
+						64,
+						editorCursor.velocity,
+						0,
+						0,
+						0,
+						NULL,
+						editorCursor.frame
+					};
+
+					if (tmp != NULL)
+						platforms = tmp;*/
+
+				}
+
+				break;
+
+			case 2: //place boxes
+
+				if (checkIsInsideObject(editorCursor, boxes, nBoxes) == -1) {
+
+					//too dumb for this right now
+
+				}
+
+				break;
+
+			case 3: //place door
+
+				break;
+
+			case 4: //place key
+				
+				break;
+
+			}
 		}
 
 

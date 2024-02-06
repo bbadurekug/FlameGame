@@ -25,8 +25,9 @@ void readLevelData(int levelID) {
 
 	fopen_s(&levelFile, levelDirectory, "r");
 
-	if (levelFile == NULL)
+	if (levelFile == NULL) {
 		return;
+	}
 
 	char levelData[1024];
 
@@ -94,9 +95,9 @@ void readLevelData(int levelID) {
 
 void freeMemory() {
 
-	free(platforms);
+	if (nPlatforms != 0) free(platforms);
 	free(targetPosBox);
-	free(boxes);
+	if (nBoxes != 0) free(boxes);
 }
 
 extern int gameRunning;

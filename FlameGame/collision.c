@@ -211,11 +211,11 @@ int checkIsInsideObject(GameObject entity, GameObject* ground, int nObjects) {
 			entity.position.x >= ground[i].position.x &&
 			entity.position.x + entity.width <= ground[i].position.x + ground[i].width)
 		{
-			return 1;
+			return i;
 		}
 	}
 
-	return 0;
+	return -1;
 
 }
 
