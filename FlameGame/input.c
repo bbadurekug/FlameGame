@@ -6,6 +6,7 @@
 #include"constants.h"
 #include"manager.h"
 #include"collision.h"
+#include<stdio.h>
 
 extern int gameRunning;
 extern int gamePaused;
@@ -388,6 +389,8 @@ void editorInput() {
 			case 0: //delete 
 				if (checkIsInsideObject(editorCursor, platforms, nPlatforms) != -1) {
 
+					GameObject* tmp = NULL;
+
 					for (int i = checkIsInsideObject(editorCursor, platforms, nPlatforms); i < (nPlatforms - 1); i++) {
 
 						platforms[i] = platforms[i + 1];
@@ -395,13 +398,19 @@ void editorInput() {
 					}
 
 					nPlatforms--;
-					GameObject* tmp = realloc(platforms, sizeof(GameObject) * nPlatforms);
+					tmp = realloc(platforms, sizeof(GameObject) * nPlatforms);
 
 					if (tmp != NULL)
 						platforms = tmp;
+					else {
+						platforms = NULL; //nie wiem co tu sie stalo lol, mozliwe ze pamiec tu ucieka hehe
+						printf("balls\n");
+					}
 
 				}
 				else if (checkIsInsideObject(editorCursor, boxes, nBoxes) != -1) {
+
+					GameObject* tmp = NULL;
 
 					for (int i = checkIsInsideObject(editorCursor, boxes, nBoxes); i < (nBoxes - 1); i++) {
 
@@ -410,10 +419,22 @@ void editorInput() {
 					}
 
 					nBoxes--;
-					GameObject* tmp = realloc(boxes, sizeof(GameObject) * nBoxes);
+					tmp = realloc(boxes, sizeof(GameObject) * nBoxes);
 
 					if (tmp != NULL)
 						boxes = tmp;
+					else{
+						boxes = NULL; //nie wiem co tu sie stalo lol, mozliwe ze pamiec tu ucieka hehe
+						printf("balls\n");
+					}
+
+					//free(tmp);
+				}
+				else if (checkIsInsideObjectSingular(editorCursor, doorKey) == 1) {
+
+					doorKey.position.x = -64;
+					doorKey.position.y = -64;
+					goal.frame = 1;
 
 				}
 				break;
@@ -422,10 +443,19 @@ void editorInput() {
 
 				if (checkIsInsideObject(editorCursor, platforms, nPlatforms) == -1) {
 
+					GameObject* tmp = NULL;
+
 					//this breaks the game lol
 
-					/*nPlatforms++;
-					GameObject* tmp = realloc(platforms, sizeof(GameObject) * nPlatforms);
+					nPlatforms++;
+
+					printf("ass and balls\n");
+
+					if (platforms != NULL)
+						tmp = realloc(platforms, sizeof(GameObject) * nPlatforms);
+					else
+						tmp = malloc(sizeof(GameObject) * nPlatforms);
+
 
 					tmp[nPlatforms - 1] = (GameObject)
 					{ editorCursor.position,
@@ -440,7 +470,9 @@ void editorInput() {
 					};
 
 					if (tmp != NULL)
-						platforms = tmp;*/
+						platforms = tmp;
+
+					//free(tmp);
 
 				}
 
@@ -450,7 +482,34 @@ void editorInput() {
 
 				if (checkIsInsideObject(editorCursor, boxes, nBoxes) == -1) {
 
-					//too dumb for this right now
+					GameObject* tmp = NULL;
+
+					//this breaks the game lol
+
+					nBoxes++;
+
+					printf("ass and balls\n");
+
+					if (boxes != NULL)
+						tmp = realloc(boxes, sizeof(GameObject) * nBoxes);
+					else
+						tmp = malloc(sizeof(GameObject) * nBoxes);
+
+
+					tmp[nBoxes - 1] = (GameObject)
+					{ editorCursor.position,
+						64,
+						64,
+						editorCursor.velocity,
+						0,
+						0,
+						0,
+						NULL,
+						editorCursor.frame
+					};
+
+					if (tmp != NULL)
+						boxes = tmp;
 
 				}
 
@@ -458,10 +517,26 @@ void editorInput() {
 
 			case 3: //place door
 
+				if (checkIsInsideObjectSingular(editorCursor, goal) != 1) {
+
+					goal.position.x = editorCursor.position.x;
+					goal.position.y = editorCursor.position.y;
+
+				}
+
+
 				break;
 
 			case 4: //place key
 				
+				if (checkIsInsideObjectSingular(editorCursor, doorKey) != 1) {
+
+					doorKey.position.x = editorCursor.position.x;
+					doorKey.position.y = editorCursor.position.y;
+					goal.frame = 0;
+
+				}
+
 				break;
 
 			}
