@@ -344,15 +344,35 @@ void editorInput() {
 
 		if (editorEvent.key.keysym.sym == SDLK_LEFT) {
 
-			freeMemory();
-			readLevelData(--levelID);
+			if (levelID > 1) {
+				freeMemory();
+				readLevelData(--levelID);
+			}
 
 		}
 
 		if (editorEvent.key.keysym.sym == SDLK_RIGHT) {
 
-			freeMemory();
-			readLevelData(++levelID);
+			if (levelID < HOW_MANY_LEVELS) {
+				freeMemory();
+				readLevelData(++levelID);
+			}
+			else {
+
+				char ID[3];
+				snprintf(ID, sizeof(ID), "%d", ++levelID);
+
+				char levelDirectory[21];
+				snprintf(levelDirectory, sizeof(levelDirectory), "./Levels/level%s.txt", ID);
+
+				FILE* levelFile;
+				fopen_s(&levelFile, levelDirectory, "w");
+				if(levelFile != NULL) fclose(levelFile);
+
+				//freeMemory();
+				readLevelData(levelID);
+
+			}
 
 		}
 

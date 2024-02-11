@@ -26,6 +26,7 @@ void readLevelData(int levelID) {
 	fopen_s(&levelFile, levelDirectory, "r");
 
 	if (levelFile == NULL) {
+		printf("wtf bro ten poziom nie istnieje\n");
 		return;
 	}
 
@@ -95,9 +96,9 @@ void readLevelData(int levelID) {
 
 void freeMemory() {
 
-	if (nPlatforms != 0) free(platforms);
+	if (platforms != NULL) free(platforms);
 	free(targetPosBox);
-	if (nBoxes != 0) free(boxes);
+	if (boxes != NULL) free(boxes);
 }
 
 extern int gameRunning;
