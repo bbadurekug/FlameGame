@@ -50,6 +50,8 @@ void readLevelData(int levelID);
 
 void freeMemory();
 
+void writeLevelData(int levelID);
+
 void tExitLogic();
 void tResumeLogic();
 
@@ -63,7 +65,7 @@ GameObject player;
 float playerAnimationTime;
 
 GameObject editorCursor;
-SDL_Texture* cursorTextureArray[5];
+SDL_Texture* cursorTextureArray[6];
 int cursorTextureIndex;
 
 GameObject teleport;

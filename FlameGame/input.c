@@ -357,36 +357,20 @@ void editorInput() {
 				freeMemory();
 				readLevelData(++levelID);
 			}
-			else {
-
-				char ID[3];
-				snprintf(ID, sizeof(ID), "%d", ++levelID);
-
-				char levelDirectory[21];
-				snprintf(levelDirectory, sizeof(levelDirectory), "./Levels/level%s.txt", ID);
-
-				FILE* levelFile;
-				fopen_s(&levelFile, levelDirectory, "w");
-				if(levelFile != NULL) fclose(levelFile);
-
-				//freeMemory();
-				readLevelData(levelID);
-
-			}
 
 		}
 
 		if (editorEvent.key.keysym.sym == SDLK_i) {
 
 			editorCursor.frame = 0;
-			cursorTextureIndex = (cursorTextureIndex + 1) % 5;
+			cursorTextureIndex = (cursorTextureIndex + 1) % 6;
 
 		}
 
 		if (editorEvent.key.keysym.sym == SDLK_k) {
 			
 			editorCursor.frame = 0;
-			cursorTextureIndex = (cursorTextureIndex == 0)? cursorTextureIndex = 4: (cursorTextureIndex - 1) % 5;
+			cursorTextureIndex = (cursorTextureIndex == 0)? cursorTextureIndex = 5: (cursorTextureIndex - 1) % 6;
 
 		}
 
@@ -399,6 +383,31 @@ void editorInput() {
 		if (editorEvent.key.keysym.sym == SDLK_l) {
 
 			editorCursor.frame += 1;
+
+		}
+
+		//creating new level when pressing "n", maybe implement later, this does not work
+
+		/*if (editorEvent.key.keysym.sym == SDLK_n) {
+
+			char ID[3];
+			snprintf(ID, sizeof(ID), "%d", HOW_MANY_LEVELS+1);
+
+			char levelDirectory[21];
+			snprintf(levelDirectory, sizeof(levelDirectory), "./Levels/level%s.txt", ID);
+
+			FILE* levelFile;
+			fopen_s(&levelFile, levelDirectory, "w");
+			if (levelFile != NULL) fclose(levelFile);
+
+			freeMemory();
+			readLevelData(HOW_MANY_LEVELS + 1);
+
+		}*/
+
+		if (editorEvent.key.keysym.sym == SDLK_LCTRL) {
+
+			writeLevelData(levelID);
 
 		}
 
@@ -554,6 +563,17 @@ void editorInput() {
 					doorKey.position.x = editorCursor.position.x;
 					doorKey.position.y = editorCursor.position.y;
 					goal.frame = 0;
+
+				}
+
+				break;
+
+			case 5:
+
+				if (checkIsInsideObjectSingular(editorCursor, player) != 1) {
+
+					player.position.x = editorCursor.position.x;
+					player.position.y = editorCursor.position.y;
 
 				}
 

@@ -249,6 +249,7 @@ void setup() {
 	cursorTextureArray[2] = boxTexture;
 	cursorTextureArray[3] = goal.texture;
 	cursorTextureArray[4] = doorKey.texture;
+	cursorTextureArray[5] = player.texture;
 
 	cursorTextureIndex = 0;
 

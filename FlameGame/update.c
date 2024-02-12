@@ -499,7 +499,7 @@ void loadScreenUpdate() {
 
 void editorUpdate() {
 
-	printf("%d\n", nPlatforms);
+	printf("%d %d\n", nPlatforms, nBoxes);
 	editorCursor.texture = cursorTextureArray[cursorTextureIndex];
 
 }

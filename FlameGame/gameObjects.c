@@ -101,6 +101,55 @@ void freeMemory() {
 	if (boxes != NULL) free(boxes);
 }
 
+void writeLevelData(levelID) {
+
+	char ID[3];
+
+	snprintf(ID, sizeof(ID), "%d", levelID);
+
+	char levelDirectory[21];
+
+	snprintf(levelDirectory, sizeof(levelDirectory), "./Levels/level%s.txt", ID);
+
+	printf("writing to %s\n", levelDirectory);
+
+	FILE* levelFile;
+
+	fopen_s(&levelFile, levelDirectory, "w");
+
+	if (levelFile == NULL) {
+		printf("wtf bro ten poziom nie istnieje\n");
+		return;
+	}
+
+	extern int nPlatforms;
+
+	fprintf_s(levelFile, "%d %d\n", (int)player.position.x, (int)player.position.y);
+
+	fprintf_s(levelFile, "%d %d %d\n", (int)goal.position.x, (int)goal.position.y, goal.frame);
+
+	fprintf_s(levelFile, "%d %d\n", (int)doorKey.position.x, (int)doorKey.position.y);
+
+	fprintf_s(levelFile, "%d\n", nPlatforms);
+
+	for (int i = 0; i < nPlatforms; i++) {
+
+		fprintf_s(levelFile, "%d %d %d %d\n", (int)platforms[i].position.x, (int)platforms[i].position.y, (int)platforms[i].width, (int)platforms[i].height);
+
+	}
+
+	fprintf_s(levelFile, "%d\n", nBoxes);
+
+	for (int i = 0; i < nBoxes; i++) {
+
+		fprintf_s(levelFile, "%d %d %d %d %d\n", (int)boxes[i].position.x, (int)boxes[i].position.y, (int)boxes[i].width, (int)boxes[i].height, boxes[i].frame);
+
+	}
+
+	fclose(levelFile);
+
+}
+
 extern int gameRunning;
 
 void tExitLogic() {
