@@ -432,7 +432,7 @@ void editorInput() {
 					if (tmp != NULL)
 						platforms = tmp;
 					else {
-						platforms = NULL; //nie wiem co tu sie stalo lol, mozliwe ze pamiec tu ucieka hehe
+						platforms = NULL; //possible memory leak
 						printf("balls\n");
 					}
 
@@ -453,7 +453,7 @@ void editorInput() {
 					if (tmp != NULL)
 						boxes = tmp;
 					else{
-						boxes = NULL; //nie wiem co tu sie stalo lol, mozliwe ze pamiec tu ucieka hehe
+						boxes = NULL; //possible memory leak
 						printf("balls\n");
 					}
 
